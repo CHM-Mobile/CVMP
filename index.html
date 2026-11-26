@@ -158,8 +158,9 @@ const MESES = ["1/26","2/26","3/26","4/26","5/26","6/26","7/26","8/26","9/26","1
 // Página 1: cumplimiento de ventas y margen (1/26 – 10/26)
 const ventasPlan   = [3491.3, 3213.6, 3600.9, 3575.2, 3540.3, 3454.4, 3605.7, 3569.2, 3518.9, 3631.8];
 const ventasReales = [3535.2, 3652.6, 4222.0, 3508.8, 3787.3, 3635.3, 3793.4, 4257.0, 3627.4, 3645.8];
-const margenPlan   = [0.3, 0.2, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3];
-const margenReal   = [33.2, 29.0, 41.2, 25.7, 33.7, 31.3, 33.9, 34.1, 23.5, 26.2];
+// % margen tomados de las columnas PLAN y REAL de la hoja "Margen MARC"
+const margenPlan   = [27.88, 21.76, 30.93, 26.69, 28.41, 27.48, 28.28, 27.27, 25.37, 28.30];
+const margenReal   = [33.20, 29.04, 41.21, 25.71, 33.69, 31.27, 33.85, 34.06, 23.48, 26.21];
 
 // Disponibilidad (1/26 – 10/26)
 const dispMeta = [87.67, 87.9, 87.5, 87.8, 86.57, 85.95, 88.06, 86.7, 86.8, 89.1];
@@ -266,7 +267,7 @@ new Chart(document.getElementById("chVentas"), {
     labels: MESES,
     datasets: [
       { label: "Ventas Plan", data: pad(ventasPlan, 12), backgroundColor: GREY, borderRadius: 3, maxBarThickness: 22, yAxisID: "y", order: 3,
-        datalabels: { display: true, anchor: "end", align: "top", color: "#555", font: { size: 9 }, formatter: v => v == null ? "" : fmtM(v) } },
+        datalabels: { display: false } },
       { label: "Ventas Reales", data: pad(ventasReales, 12), backgroundColor: NAVY, borderRadius: 3, maxBarThickness: 22, yAxisID: "y", order: 3,
         datalabels: { display: true, anchor: "end", align: "top", color: NAVY, font: { size: 9, weight: "bold" }, formatter: v => v == null ? "" : fmtM(v) } },
       { label: "% Margen Plan", type: "line", data: pad(margenPlan, 12), borderColor: GREY, borderDash: [6, 4], pointRadius: 0, yAxisID: "y1", tension: .3, order: 1,
@@ -340,8 +341,8 @@ document.getElementById("detalle1").innerHTML = ventasPlan.map((p, i) => `
     <td>${MESES[i]}</td>
     <td class="num">${fmtM(p)}</td>
     <td class="num">${fmtM(ventasReales[i])}</td>
-    <td class="num">${margenPlan[i]}</td>
-    <td class="num ${margenReal[i] < 30 ? "neg" : "pos"}">${margenReal[i].toFixed(1)} %</td>
+    <td class="num">${margenPlan[i].toFixed(2)} %</td>
+    <td class="num ${margenReal[i] < margenPlan[i] ? "neg" : "pos"}">${margenReal[i].toFixed(2)} %</td>
     <td class="num">${dispMeta[i].toFixed(2)} %</td>
     <td class="num ${dispReal[i] < dispMeta[i] ? "neg" : "pos"}">${dispReal[i].toFixed(2)} %</td>
     <td class="num">${tiempoF[i].toLocaleString("es-CO", {maximumFractionDigits: 1})}</td>

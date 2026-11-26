@@ -3,504 +3,539 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Comité Ejecutivo | Contrato Marc Palas - CHM Minería</title>
+  <title>MARC PALAS | Control Gerencial de Margen Bruto, Costos y Penalizaciones</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
-    .navy-gradient { background: linear-gradient(135deg, #0b1f3a 0%, #16365f 100%); }
-    .card { background: #ffffff; border-radius: 0.875rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06); }
-    .tab-active { background-color: #ffffff; color: #0b1f3a; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
-    .tab-inactive { color: #cbd5e1; font-weight: 500; }
-    .tab-inactive:hover { color: #ffffff; background-color: rgba(255,255,255,0.08); }
+    body { font-family: 'Inter', sans-serif; background-color: #eef2f6; color: #0f172a; }
+    .looker-navy { background: linear-gradient(90deg, #102a56 0%, #1b3b73 100%); }
+    .looker-subbar { background-color: #1e3a6e; }
+    .card { background: #ffffff; border-radius: 0.75rem; border: 1px solid #dbe3ee; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06); }
+    .slide-btn-active { background-color: #ffffff; color: #102a56; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+    .slide-btn-inactive { color: #dbeafe; font-weight: 600; }
+    .slide-btn-inactive:hover { background-color: rgba(255,255,255,0.12); color: #ffffff; }
+    .table-header-navy { background-color: #1b3664; color: #ffffff; }
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     @media print {
       .no-print { display: none !important; }
       body { background: #ffffff; }
-      .card { break-inside: avoid; box-shadow: none; border: 1px solid #cbd5e1; }
+      .card { box-shadow: none; break-inside: avoid; }
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- HEADER EJECUTIVO -->
-  <header class="navy-gradient text-white shadow-lg sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div class="flex items-center gap-4">
-          <div class="bg-amber-400 text-slate-950 font-extrabold px-3 py-2 rounded-lg tracking-tight text-lg leading-none shadow">
-            CHM<span class="block text-[10px] font-bold uppercase tracking-widest text-slate-800">Minería</span>
-          </div>
-          <div>
-            <div class="flex items-center gap-2.5">
-              <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight">CONTRATO MARC PALAS</h1>
-              <span id="syncBadge" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                Base Local + Conector Sheets
-              </span>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-300 mt-0.5">
-               Tablero Gerencial de Ventas, Costos, Margen Bruto y Penalizaciones · Corte: 25 Nov 2026
-            </p>
-          </div>
+  <!-- ENCABEZADO CORPORATIVO ESTILO LOOKER STUDIO MEJORADO -->
+  <header class="looker-navy text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 py-3.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <div class="flex items-center gap-3.5">
+        <div class="bg-amber-400 text-slate-950 font-black px-3 py-1.5 rounded-md text-base leading-tight tracking-tight shadow-sm">
+          CHM<span class="block text-[9px] font-bold uppercase tracking-widest text-slate-800">Minería</span>
         </div>
-
-        <!-- NAVEGACIÓN DE SLIDES Y ACCIONES -->
-        <div class="flex flex-wrap items-center gap-2 no-print">
-          <div class="bg-slate-900/50 p-1 rounded-xl flex items-center gap-1 border border-white/10">
-            <button onclick="switchSlide(1)" id="btnSlide1" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm transition-all tab-active">
-              1. Ventas y Margen Bruto
-            </button>
-            <button onclick="switchSlide(2)" id="btnSlide2" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm transition-all tab-inactive">
-              2. Costos, Penalizaciones y Flota
-            </button>
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-lg sm:text-xl font-extrabold tracking-wide uppercase">MARC PALAS</h1>
+            <span id="slideSubtitleBadge" class="text-xs font-bold px-2.5 py-0.5 rounded bg-blue-500/30 border border-blue-300/30 text-blue-100">
+              Página 1 de 2 · Control de Margen Bruto
+            </span>
+            <span id="sheetSyncIndicator" class="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/30 text-emerald-200">
+              ✓ Datos Oficiales Looker Studio · Act. 26/11/2026
+            </span>
           </div>
+          <p class="text-xs text-blue-200 mt-0.5">
+            Reporte Ejecutivo de Ventas, Margen Bruto, Disponibilidad de Flota, Costos y Penalizaciones
+          </p>
+        </div>
+      </div>
 
-          <button onclick="openDataModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl transition shadow flex items-center gap-1.5">
-            <span>⚡ Sincronizar BD Sheets</span>
+      <!-- CONTROLES DE NAVEGACIÓN ENTRE LOS 2 SLIDES -->
+      <div class="flex flex-wrap items-center gap-2 no-print">
+        <div class="bg-slate-950/35 p-1 rounded-lg flex items-center gap-1 border border-white/15">
+          <button id="navSlide1" onclick="setSlide(1)" class="px-3.5 py-1.5 rounded-md text-xs sm:text-sm transition slide-btn-active">
+            1. Control de Margen Bruto
           </button>
-          <button onclick="window.print()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2.5 rounded-xl transition border border-white/15">
-            Exportar PDF
+          <button id="navSlide2" onclick="setSlide(2)" class="px-3.5 py-1.5 rounded-md text-xs sm:text-sm transition slide-btn-inactive">
+            2. Control de Costos y Penalizaciones
           </button>
         </div>
+
+        <a href="https://docs.google.com/spreadsheets/d/1QXfkPl43bffEq_oZ8aDCI7rKG9tdJsGWdka8RPecydw/edit?usp=sharing" target="_blank" rel="noopener"
+           class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3 py-2 rounded-lg border border-white/20 transition">
+          BD Link (Sheets) ↗
+        </a>
+        <button onclick="syncFromGoogleSheets()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-2 rounded-lg shadow transition">
+          ↻ Refrescar BD
+        </button>
+        <button onclick="window.print()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-lg border border-white/20 transition">
+          Imprimir / PDF
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1 space-y-6">
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="max-w-[1440px] w-full mx-auto px-4 sm:px-6 py-5 flex-1 space-y-5">
 
-    <!-- =========================================================
-         SLIDE 1: RESUMEN FINANCIERO - VENTAS, COSTOS Y MARGEN BRUTO
-         ========================================================= -->
-    <section id="slide1" class="space-y-6">
-      <!-- Barra de calibración rápida / Estado de datos de Ventas -->
-      <div id="salesNotice" class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 no-print">
-        <div class="text-xs sm:text-sm text-slate-700">
-          <span class="font-bold text-blue-900">Calibración de Ingresos (Slide 1):</span>
-          Los <strong>Costos ($19.024,4M)</strong> y <strong>Penalizaciones ($196,8M)</strong> son 100% reales del reporte. Si Google Sheets requiere sesión corporativa, ajusta aquí la facturación mensual base o sincroniza la hoja en 1 clic para calcular el <strong>Margen Bruto exacto</strong>.
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <label class="text-xs font-semibold text-slate-600">Facturación Base/Mes ($M):</label>
-          <input type="number" id="baseRevenueInput" value="2650" step="25" onchange="recalculateFinancials()"
-            class="w-24 px-2.5 py-1.5 text-sm font-bold text-slate-900 bg-white border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-          <span class="text-xs font-semibold text-slate-600 ml-2">Meta Margen (%):</span>
-          <input type="number" id="targetMarginInput" value="22" step="0.5" onchange="recalculateFinancials()"
-            class="w-16 px-2 py-1.5 text-sm font-bold text-slate-900 bg-white border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <!-- =======================================================================
+         SLIDE 1: CONTROL DE MARGEN BRUTO (TAL CUAL PÁGINA 1 + KPIs GERENCIALES)
+         ======================================================================= -->
+    <section id="viewSlide1" class="space-y-5">
+
+      <!-- BANDA TÍTULO SLIDE 1 -->
+      <div class="looker-subbar text-white rounded-lg px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
+        <span class="text-xs sm:text-sm font-extrabold tracking-wider uppercase">CONTROL DE MARGEN BRUTO — CUMPLIMIENTO DE VENTAS, MARGEN Y DISPONIBILIDAD</span>
+        <div class="flex items-center gap-2 no-print">
+          <label class="text-[11px] text-blue-200 flex items-center gap-1.5 cursor-pointer">
+            <input type="checkbox" id="chkFullYearAxis" checked onchange="renderSlide1Charts()" class="rounded text-blue-600" />
+            Mostrar eje anual completo (1/26 – 12/26 como en Looker)
+          </label>
+          <button onclick="toggleSlide1DataTable()" class="text-[11px] bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded font-semibold transition">
+            Ver / Ocultar Tabla Numérica
+          </button>
         </div>
       </div>
 
-      <!-- KPI CARDS GERENCIALES SLIDE 1 -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="card p-5 border-l-4 border-l-blue-600">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ventas Acumuladas (Ene–Sep)</p>
-          <p id="kpiVentas" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">$23.850,0 M</p>
-          <p id="kpiVentasSub" class="text-xs text-slate-500 mt-1.5">Promedio: $2.650,0 M / mes</p>
+      <!-- TARJETAS KPI EJECUTIVAS SLIDE 1 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="card p-4 border-l-4 border-l-[#1b3664]">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Ventas Reales (Ene–Oct)</span>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">107,0% Cumpl.</span>
+          </div>
+          <p id="s1KpiVentasReal" class="text-2xl font-extrabold text-slate-900 mt-1">$37.664,8 M</p>
+          <p id="s1KpiVentasPlan" class="text-xs text-slate-500 mt-1">Plan: <strong>$35.201,3 M</strong> (<span class="text-emerald-700 font-semibold">+$2.463,5 M</span>)</p>
         </div>
 
-        <div class="card p-5 border-l-4 border-l-slate-700">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Costo Total Ejecutado (Ene–Sep)</p>
-          <p id="kpiCostos1" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">$19.024,4 M</p>
-          <p class="text-xs text-rose-600 font-semibold mt-1.5">▲ Pico crítico Ago: $2.501,2 M (+22,5%)</p>
-        </div>
-
-        <div class="card p-5 border-l-4 border-l-emerald-600">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Margen Bruto Neto (Post-Multas)</p>
+        <div class="card p-4 border-l-4 border-l-blue-600">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">% Margen Bruto Real Acum.</span>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">Sep: 23,5% · Oct: 26,2%</span>
+          </div>
           <div class="flex items-baseline gap-2 mt-1">
-            <p id="kpiMargenPct" class="text-2xl sm:text-3xl font-extrabold text-emerald-700">19,7%</p>
-            <span id="kpiMargenVal" class="text-sm font-bold text-slate-600">($4.698,3 M)</span>
+            <p id="s1KpiMargenPct" class="text-2xl font-extrabold text-blue-900">31,4%</p>
+            <span id="s1KpiMargenCOP" class="text-xs font-bold text-slate-500">($11.833,6 M utilidad bruta)</span>
           </div>
-          <p id="kpiMargenGap" class="text-xs font-semibold text-amber-600 mt-1.5">Brecha vs Meta (22,0%): -2,3 pts</p>
+          <p class="text-xs text-slate-500 mt-1">Pico en <strong>3/26 (41,2%)</strong> · Piso en <strong>9/26 (23,5%)</strong></p>
         </div>
 
-        <div class="card p-5 border-l-4 border-l-rose-600">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Erosión por Penalizaciones (Año)</p>
-          <p class="text-2xl sm:text-3xl font-extrabold text-rose-600 mt-1">$196,79 M</p>
-          <p class="text-xs text-rose-700 font-semibold mt-1.5">55,7% concentrado en Sep–Nov ($109,6M)</p>
-        </div>
-      </div>
-
-      <!-- GRÁFICOS PRINCIPALES SLIDE 1 -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Evolución P&L y % Margen -->
-        <div class="card p-5 lg:col-span-2">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-            <div>
-              <h2 class="text-base font-bold text-slate-900">Comportamiento Mensual: Ventas, Costos y % Margen Bruto</h2>
-              <p class="text-xs text-slate-500">Impacto directo del sobrecosto operativo de agosto y pico salarial de septiembre en la rentabilidad</p>
-            </div>
-            <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg self-start">Ene – Sep 2026 (Cierre Costos)</span>
+        <div class="card p-4 border-l-4 border-l-emerald-600">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Disponibilidad Promedio Palas</span>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">+0,80 pp vs Meta</span>
           </div>
-          <div class="h-80">
-            <canvas id="pnlChart"></canvas>
+          <div class="flex items-baseline gap-2 mt-1">
+            <p class="text-2xl font-extrabold text-slate-900">88,21%</p>
+            <span class="text-xs font-semibold text-slate-500">vs 87,41% Meta</span>
           </div>
+          <p class="text-xs text-rose-600 font-medium mt-1">Meses bajo meta: <strong>4/26 (87,37%)</strong> y <strong>9/26 (85,8%)</strong></p>
         </div>
 
-        <!-- Estructura de Costos y Fugas de Margen -->
-        <div class="card p-5 flex flex-col justify-between">
-          <div>
-            <h2 class="text-base font-bold text-slate-900">Composición del Costo y Fugas</h2>
-            <p class="text-xs text-slate-500 mb-4">Distribución acumulada ($19.024,4M) y focos de desviación</p>
-            <div class="h-52">
-              <canvas id="costShareChart"></canvas>
-            </div>
+        <div class="card p-4 border-l-4 border-l-amber-500">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Efecto Bonificaciones en Ingreso</span>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">2 Hitos Pagados</span>
           </div>
-
-          <div class="mt-4 pt-4 border-t border-slate-100 space-y-2.5 text-xs">
-            <div class="p-2.5 rounded-lg bg-rose-50 border border-rose-100">
-              <p class="font-bold text-rose-900">1. Desviación Agosto (+$459M vs media)</p>
-              <p class="text-rose-700 mt-0.5">Órdenes de Servicio saltó a <strong>$235,9M</strong> (media: $40M) y Gasto Operacional a <strong>$503,1M</strong>.</p>
-            </div>
-            <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-100">
-              <p class="font-bold text-amber-900">2. Presión Nómina Septiembre ($1.760M)</p>
-              <p class="text-amber-800 mt-0.5"> Incremento de <strong>+$265M</strong> frente al piso del año, coincidiendo con <strong>$40,1M</strong> en multas.</p>
-            </div>
-          </div>
+          <p class="text-2xl font-extrabold text-slate-900 mt-1">$1.336,1 M</p>
+          <p class="text-xs text-slate-500 mt-1"><strong>2/26:</strong> $692,8M (2025) · <strong>8/26:</strong> $643,3M (1er Sem)</p>
         </div>
       </div>
 
-      <!-- TABLA GERENCIAL RESUMEN P&L -->
-      <div class="card overflow-hidden">
-        <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
-          <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Estado de Resultados Operativo Mensual ($ Millones COP)</h3>
-          <span class="text-xs text-slate-500">Penalizaciones deducidas directamente del Margen Neto del Contrato</span>
+      <!-- LAYOUT CENTRAL SLIDE 1: IZQUIERDA (2 GRÁFICOS) + DERECHA (TABLA COMENTARIOS) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+
+        <!-- COLUMNA IZQUIERDA (8/12): GRÁFICOS DE VENTAS/MARGEN Y DISPONIBILIDAD -->
+        <div class="lg:col-span-8 flex flex-col gap-5">
+
+          <!-- Gráfico 1: Cumplimiento de Ventas Vs Margen Bruto -->
+          <div class="card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Cumplimiento de Ventas Vs Margen Bruto</h2>
+                <p class="text-xs text-slate-500">Barras: Ventas Plan vs Ventas Reales ($M) · Líneas: % Margen Plan vs % Margen Real</p>
+              </div>
+              <div class="flex items-center gap-3 text-[11px] font-semibold">
+                <span class="flex items-center gap-1"><span class="w-3 h-3 inline-block rounded-sm bg-[#9ca3af]"></span> Ventas Plan</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 inline-block rounded-sm bg-[#232f66]"></span> Ventas Reales</span>
+                <span class="flex items-center gap-1"><span class="w-4 border-t-2 border-dashed border-slate-400 inline-block"></span> % Margen Plan</span>
+                <span class="flex items-center gap-1"><span class="w-4 border-t-2 border-[#1e293b] inline-block"></span> % Margen Real</span>
+              </div>
+            </div>
+            <div class="h-[300px]">
+              <canvas id="chartVentasMargen"></canvas>
+            </div>
+          </div>
+
+          <!-- Gráfico 2: Disponibilidad Meta vs Real -->
+          <div class="card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Disponibilidad Operativa de Palas (Meta vs Real)</h2>
+                <p class="text-xs text-slate-500">Puntos en rojo identifican incumplimientos frente a la disponibilidad ofrecida (4/26 y 9/26)</p>
+              </div>
+              <div class="flex items-center gap-4 text-[11px] font-semibold">
+                <span class="flex items-center gap-1.5"><span class="w-4 border-t-2 border-dashed border-slate-400 inline-block"></span> Meta de Disponibilidad</span>
+                <span class="flex items-center gap-1.5"><span class="w-4 border-t-2 border-[#232f66] inline-block"></span> Disponibilidad Real</span>
+              </div>
+            </div>
+            <div class="h-[220px]">
+              <canvas id="chartDisponibilidad"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA (4/12): TABLA DE COMENTARIOS (MES ▼ | COMENTARIOS) -->
+        <div class="lg:col-span-4 card overflow-hidden flex flex-col">
+          <div class="table-header-navy px-4 py-3 flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider">Bitácora Operativa · Comentarios</span>
+            <input type="text" id="searchSlide1Comments" oninput="renderSlide1Comments()" placeholder="Filtrar ej: H150, Bonificación..."
+              class="no-print text-[11px] text-slate-900 bg-white/95 px-2.5 py-1 rounded border-0 focus:outline-none w-40" />
+          </div>
+
+          <div class="overflow-y-auto custom-scroll flex-1 max-h-[580px]">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 sticky top-0">
+                <tr>
+                  <th class="py-2.5 px-3 w-16">MES ▼</th>
+                  <th class="py-2.5 px-3">COMENTARIOS</th>
+                </tr>
+              </thead>
+              <tbody id="slide1CommentsBody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+
+          <!-- Nota ejecutiva al pie de comentarios -->
+          <div class="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-600">
+            <strong class="text-slate-800">Lectura Gerencial:</strong> La caída de margen en <strong>9/26 (23,5%)</strong> combina el -1% de disponibilidad con el ajuste salarial/aprendices y $40,1M en multas de flota auxiliar (ver Página 2).
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABLA NUMÉRICA DESPLEGABLE PLAN VS REAL (SLIDE 1) -->
+      <div id="slide1NumericTableCard" class="card overflow-hidden hidden">
+        <div class="px-5 py-3 bg-slate-800 text-white flex items-center justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-wider">Detalle Mensual Auditado — Ventas, Margen Bruto y Disponibilidad (1/26 – 10/26)</h3>
+          <span class="text-[11px] text-slate-300">Cifras en Millones COP ($M) y Porcentajes (%)</span>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-xs sm:text-sm text-right">
-            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+          <table class="w-full text-xs text-right">
+            <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
               <tr>
-                <th class="py-3 px-4 text-left">Concepto</th>
-                <th class="py-3 px-3">1/26</th>
-                <th class="py-3 px-3">2/26</th>
-                <th class="py-3 px-3">3/26</th>
-                <th class="py-3 px-3">4/26</th>
-                <th class="py-3 px-3">5/26</th>
-                <th class="py-3 px-3">6/26</th>
-                <th class="py-3 px-3">7/26</th>
-                <th class="py-3 px-3 bg-rose-50/60">8/26</th>
-                <th class="py-3 px-3 bg-amber-50/60">9/26</th>
-                <th class="py-3 px-4 font-bold bg-slate-100">Acum. Ene-Sep</th>
+                <th class="py-2.5 px-4 text-left">Indicador</th>
+                <th class="py-2.5 px-2.5">1/26</th>
+                <th class="py-2.5 px-2.5">2/26</th>
+                <th class="py-2.5 px-2.5">3/26</th>
+                <th class="py-2.5 px-2.5">4/26</th>
+                <th class="py-2.5 px-2.5">5/26</th>
+                <th class="py-2.5 px-2.5">6/26</th>
+                <th class="py-2.5 px-2.5">7/26</th>
+                <th class="py-2.5 px-2.5">8/26</th>
+                <th class="py-2.5 px-2.5 bg-rose-50">9/26</th>
+                <th class="py-2.5 px-2.5">10/26</th>
+                <th class="py-2.5 px-3 bg-slate-200/70">Total / Prom.</th>
               </tr>
             </thead>
-            <tbody id="pnlTableBody" class="divide-y divide-slate-100"></tbody>
+            <tbody id="slide1NumericBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
       </div>
+
     </section>
 
-    <!-- =========================================================
-         SLIDE 2: CONTROL DE COSTOS, PENALIZACIONES Y FLOTA CRÍTICA
-         ========================================================= -->
-    <section id="slide2" class="space-y-6 hidden">
+    <!-- =======================================================================
+         SLIDE 2: CONTROL DE COSTOS Y PENALIZACIONES (TAL CUAL PÁGINA 2 + MEJORAS)
+         ======================================================================= -->
+    <section id="viewSlide2" class="space-y-5 hidden">
 
-      <!-- KPI CARDS SLIDE 2 -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="card p-5 border-l-4 border-l-rose-600">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Penalizaciones (Ene–Nov)</p>
-          <p class="text-2xl sm:text-3xl font-extrabold text-rose-600 mt-1">$196.791.021</p>
-          <p class="text-xs text-slate-600 mt-1.5">Pico histórico en <strong>10/26 ($46,42M)</strong></p>
-        </div>
-
-        <div class="card p-5 border-l-4 border-l-slate-800">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Indisponibilidad Flota Soporte</p>
-          <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">$166,0 M <span class="text-sm font-semibold text-rose-600">(84,4%)</span></p>
-          <p class="text-xs text-slate-600 mt-1.5">Reclamos: $25,0M (12,7%) · Seguridad: $7,0M</p>
-        </div>
-
-        <div class="card p-5 border-l-4 border-l-emerald-600">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Penalización Noviembre (11/26)</p>
-          <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">$23.075.228</p>
-          <p class="text-xs text-emerald-700 font-semibold mt-1.5">▼ -50,3% vs Oct (Ingreso Camión 228 el 11-Nov)</p>
-        </div>
-
-        <div class="card p-5 border-l-4 border-l-amber-500">
-          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Alerta HSEQ / Seguridad</p>
-          <p class="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-1">$7,0 M <span class="text-xs font-bold text-slate-500">(Oct/26)</span></p>
-          <p class="text-xs text-amber-800 font-medium mt-1.5">2 hallazgos eléctricos críticos sin protección</p>
+      <!-- BANDA TÍTULO SLIDE 2 -->
+      <div class="looker-subbar text-white rounded-lg px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
+        <span class="text-xs sm:text-sm font-extrabold tracking-wider uppercase">CONTROL DE COSTOS Y PENALIZACIONES — EVOLUCIÓN POR CUENTAS Y BITÁCORA DE EQUIPOS</span>
+        <div class="flex flex-wrap items-center gap-2 no-print">
+          <button id="btnCutNov" onclick="toggleNovCut()" class="text-[11px] bg-amber-400 text-slate-950 font-bold px-2.5 py-1 rounded transition">
+            Corte Penalizaciones: Ene–Nov ($196,8M - Tal cual Looker)
+          </button>
         </div>
       </div>
 
-      <!-- DOS GRÁFICOS MEJORADOS VS LOOKER STUDIO -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Gráfico Costos con Toggle Ex-Nómina -->
-        <div class="card p-5">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-            <div>
-              <h2 class="text-base font-bold text-slate-900">Desglose Mensual de Costos ($M)</h2>
-              <p class="text-xs text-slate-500">Aísla los rubros variables para ver picos ocultos por la nómina</p>
-            </div>
-            <button onclick="togglePayrollView()" id="btnTogglePayroll"
-              class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition self-start">
-              🔍 Aislar Costos Variables (Ocultar Nómina)
-            </button>
-          </div>
-          <div class="h-72">
-            <canvas id="costsBreakdownChart"></canvas>
-          </div>
+      <!-- TARJETAS KPI EJECUTIVAS SLIDE 2 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="card p-4 border-l-4 border-l-[#1b3664]">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Costo Total Acumulado (1/26–9/26)</span>
+          <p class="text-2xl font-extrabold text-slate-900 mt-1">$19.024,4 M</p>
+          <p class="text-xs text-rose-600 font-semibold mt-1">▲ Pico en 8/26: $2.501,2 M (OS: $235,9M · Oper: $503,1M)</p>
         </div>
 
-        <!-- Gráfico Penalizaciones por Causal -->
-        <div class="card p-5">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-            <div>
-              <h2 class="text-base font-bold text-slate-900">Evolución de Penalizaciones por Causal (1/26 – 11/26)</h2>
-              <p class="text-xs text-slate-500">Escalada crítica desde septiembre por Camión 227 y Canasta 212</p>
-            </div>
-            <span class="text-xs font-bold px-2.5 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg self-start">
-              Meta Tolerancia Máx: $10M/mes
-            </span>
+        <div class="card p-4 border-l-4 border-l-indigo-600">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Gasto de Personal (73,2% del Costo)</span>
+          <p class="text-2xl font-extrabold text-slate-900 mt-1">$13.919,0 M</p>
+          <p class="text-xs text-amber-700 font-semibold mt-1">▲ Máximo en 9/26: $1.760,0 M (Ajuste salarial y aprendices)</p>
+        </div>
+
+        <div class="card p-4 border-l-4 border-l-rose-600">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Penalizaciones</span>
+            <span id="s2BadgeCut" class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-800">1/26 – 11/26</span>
           </div>
-          <div class="h-72">
-            <canvas id="penaltiesChart"></canvas>
-          </div>
+          <p id="s2KpiPenTotal" class="text-2xl font-extrabold text-rose-600 mt-1">$196.791.021</p>
+          <p id="s2KpiPenSub" class="text-xs text-slate-500 mt-1">Cerrado Ene–Oct: <strong>$173,72 M</strong> · Preliminar Nov: <strong>$23,08 M</strong></p>
+        </div>
+
+        <div class="card p-4 border-l-4 border-l-amber-500">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Distribución por Causal</span>
+          <p class="text-2xl font-extrabold text-slate-900 mt-1">84,5% <span class="text-sm font-bold text-slate-500">Flota Soporte</span></p>
+          <p class="text-xs text-slate-600 mt-1">Disp: <strong>$166,3M</strong> · Reclamos: <strong>$25,0M</strong> · Seg: <strong>$7,0M</strong></p>
         </div>
       </div>
 
-      <!-- PARETO DE EQUIPOS CRÍTICOS (INSIGHT GERENCIAL) -->
-      <div class="card p-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <div>
-            <h2 class="text-base font-bold text-slate-900">Foco Gerencial: Activos Responsables del Drenaje de Margen</h2>
-            <p class="text-xs text-slate-500">Síntesis ejecutiva de reincidencia mecánica, siniestralidad y brecha de operadores</p>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="p-4 rounded-xl bg-rose-50/70 border border-rose-200">
-            <div class="flex items-center justify-between">
-              <span class="font-extrabold text-slate-900 text-sm">🚨 Camión 227 (Pasar a Canasta)</span>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-rose-600 text-white">FUERA TODO NOV</span>
+      <!-- LAYOUT CENTRAL SLIDE 2: IZQUIERDA (COSTOS + PENALIZACIONES) + DERECHA (TABLA CONCEPTO PENALIZACIONES) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+
+        <!-- COLUMNA IZQUIERDA (7/12): DOS GRÁFICOS COMO EN LOOKER STUDIO -->
+        <div class="lg:col-span-7 flex flex-col gap-5">
+
+          <!-- Gráfico Superior: Costos (1/26 - 9/26) -->
+          <div class="card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Costos por Cuentas (1/26 – 9/26)</h2>
+                <p class="text-xs text-slate-500">Alterna entre vista de líneas original o aislar rubros sin nómina para ver desviaciones</p>
+              </div>
+              <div class="flex items-center gap-1.5 no-print">
+                <button id="btnCostLine" onclick="setCostMode('line')" class="text-[11px] px-2.5 py-1 rounded font-bold bg-[#1b3664] text-white">
+                  Líneas (Looker)
+                </button>
+                <button id="btnCostBar" onclick="setCostMode('bar')" class="text-[11px] px-2.5 py-1 rounded font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">
+                  Apilado
+                </button>
+                <button id="btnCostVar" onclick="setCostMode('exPayroll')" class="text-[11px] px-2.5 py-1 rounded font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100">
+                  Sin Nómina (Zoom)
+                </button>
+              </div>
             </div>
-            <p class="text-xs text-slate-700 mt-2 leading-relaxed">
-              <strong>Reincidencia en 6 meses:</strong> Embrague (Ene/Abr), arranque 11d (Feb), cardán, fuga hidráulica, mofle partido y AA (Sep/Oct) + <strong>16 días acumulados sin operador</strong>. Principal destructor de disponibilidad del contrato.
-            </p>
+            <div class="h-[265px]">
+              <canvas id="chartCostos"></canvas>
+            </div>
           </div>
 
-          <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200">
-            <div class="flex items-center justify-between">
-              <span class="font-extrabold text-slate-900 text-sm">⚠️ Canasta 212</span>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-600 text-white">SINIESTRO OCT</span>
+          <!-- Gráfico Inferior: Penalizaciones (1/26 - 11/26) -->
+          <div class="card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div>
+                <h2 class="text-sm sm:text-base font-extrabold text-slate-900">Penalizaciones Mensuales por Concepto</h2>
+                <p class="text-xs text-slate-500">Disponibilidad Equipos de Soporte, Reclamos y Seguridad ($ Millones COP)</p>
+              </div>
+              <div class="flex items-center gap-3 text-[11px] font-semibold">
+                <span class="flex items-center gap-1"><span class="w-3 h-3 inline-block rounded-sm bg-[#8c8c8c]"></span> Disp. Soporte</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 inline-block rounded-sm bg-[#232f66]"></span> Reclamos</span>
+                <span class="flex items-center gap-1"><span class="w-3 h-3 inline-block rounded-sm bg-[#f59e0b]"></span> Seguridad</span>
+              </div>
             </div>
-            <p class="text-xs text-slate-700 mt-2 leading-relaxed">
-              <strong>Alta severidad en paros:</strong> 20,5 días por motor (Abr), 22 días mtto + 8 días sin operador (Sep) y fuera de servicio en octubre por <strong>accidente con daño a la propiedad</strong>. Explicó el salto sobre $40M/mes.
-            </p>
+            <div class="h-[255px]">
+              <canvas id="chartPenalizaciones"></canvas>
+            </div>
           </div>
 
-          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-            <div class="flex items-center justify-between">
-              <span class="font-extrabold text-slate-900 text-sm">🔧 Camión 61 & Relevo 228</span>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-700 text-white">FUERA DESDE 7-NOV</span>
-            </div>
-            <p class="text-xs text-slate-700 mt-2 leading-relaxed">
-              <strong>Falla eléctrica crónica:</strong> Alternador (Ene), fuga cigüeñal 7,5d (Feb), eléctrico 10,5d (Abr) y fuera desde el 7-Nov por AA y sistema eléctrico. El ingreso del <strong>Camión 228 nuevo (11-Nov)</strong> contuvo parcialmente el impacto.
-            </p>
-          </div>
         </div>
-      </div>
 
-      <!-- BITÁCORA DETALLADA FILTRABLE -->
-      <div class="card overflow-hidden">
-        <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h3 class="text-base font-bold text-slate-900">Bitácora Auditable de Penalizaciones (1/26 – 11/26)</h3>
-            <p class="text-xs text-slate-500">Filtra por equipo crítico, falta de operador o hallazgos de seguridad</p>
+        <!-- COLUMNA DERECHA (5/12): TABLA CONCEPTO DE PENALIZACIONES -->
+        <div class="lg:col-span-5 card overflow-hidden flex flex-col">
+          <div class="table-header-navy px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-extrabold uppercase tracking-wider">Concepto de Penalizaciones</span>
+            <input type="text" id="searchSlide2Penalties" oninput="renderSlide2PenaltiesTable()" placeholder="Buscar ej: 227, 212, 61, eléctrico..."
+              class="no-print text-[11px] text-slate-900 bg-white/95 px-2.5 py-1 rounded border-0 focus:outline-none w-48" />
           </div>
-          <div class="flex items-center gap-2 no-print">
-            <input type="text" id="searchPenalty" oninput="renderPenaltiesTable()" placeholder="Filtrar ej: 227, operador, eléctrico..."
-              class="px-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
-            <select id="filterSeverity" onchange="renderPenaltiesTable()"
-              class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white font-medium">
-              <option value="ALL">Todos los meses (11)</option>
-              <option value="CRITICAL">Críticos (Mayor a $15M)</option>
-              <option value="OPERATOR">Con falta de Operador</option>
-              <option value="SAFETY">Hallazgos Seguridad</option>
-            </select>
+
+          <div class="overflow-y-auto custom-scroll flex-1 max-h-[595px]">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 sticky top-0">
+                <tr>
+                  <th class="py-2.5 px-3">Fecha ▼</th>
+                  <th class="py-2.5 px-3 text-right">Total Penalización</th>
+                  <th class="py-2.5 px-3">Concepto</th>
+                </tr>
+              </thead>
+              <tbody id="slide2PenaltiesBody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+
+          <div class="p-3 bg-rose-50/70 border-t border-rose-200 text-[11px] text-rose-950">
+            <strong>Foco Pareto Flota Auxiliar:</strong> Intervenir de inmediato <strong>Camión 227</strong> (fuera todo Nov), <strong>Canasta 212</strong> (siniestro Oct + 22d mtto Sep) y <strong>Camión 61</strong> (eléctrico/AA desde 7-Nov), además de cubrir relevos de operador.
           </div>
         </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-4">Periodo</th>
-                <th class="py-3 px-4 text-right">Total Penalización</th>
-                <th class="py-3 px-4 text-center">Disp. / Recl. / Seg.</th>
-                <th class="py-3 px-4">Concepto y Causas Raíz Identificadas</th>
-              </tr>
-            </thead>
-            <tbody id="penaltiesTableBody" class="divide-y divide-slate-100"></tbody>
-          </table>
-        </div>
+
       </div>
     </section>
+
   </main>
-
-  <!-- MODAL DE CONEXIÓN A GOOGLE SHEETS / PEGADO RÁPIDO -->
-  <div id="dataModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="text-lg font-extrabold text-slate-900">Conector Base de Datos — Google Sheets</h3>
-        <button onclick="closeDataModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
-      </div>
-
-      <div class="space-y-3 text-xs sm:text-sm text-slate-600">
-        <p>
-          <strong>Opción 1 — Conexión Directa en Vivo:</strong> Conecta con el ID
-          <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">1QXfkPl43bffEq_oZ8aDCI7rKG9tdJsGWdka8RPecydw</code>.
-          Si tu hoja tiene un nombre de pestaña específico para Ventas/Margen, indícalo abajo:
-        </p>
-        <div class="flex gap-2">
-          <input type="text" id="sheetTabName" placeholder="Nombre de pestaña (opcional, ej: Ventas o Resumen)"
-            class="flex-1 px-3 py-2 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-600" />
-          <button onclick="connectGoogleSheet()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
-            Conectar Ahora
-          </button>
-        </div>
-        <p id="sheetStatusMsg" class="text-xs font-semibold text-slate-500"></p>
-      </div>
-
-      <div class="border-t border-slate-200 pt-4 space-y-2">
-        <p class="text-xs sm:text-sm text-slate-700 font-semibold">
-          Opción 2 — Pegar Ventas Mensuales (si el Sheet está restringido a @somosgrupo-a.com):
-        </p>
-        <p class="text-xs text-slate-500">
-          Ingresa los 9 valores de Ventas (1/26 a 9/26 en Millones COP) separados por coma, espacio o tabulación:
-        </p>
-        <textarea id="pasteSalesInput" rows="2" placeholder="Ejemplo: 2620, 2680, 2710, 2690, 2640, 2700, 2660, 2750, 2810"
-          class="w-full p-2.5 border border-slate-300 rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-600"></textarea>
-        <div class="flex justify-end gap-2 pt-1">
-          <button onclick="closeDataModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">Cerrar</button>
-          <button onclick="applyPastedSales()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs">
-            Aplicar Ventas al Tablero
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script>
     // ============================================================================
-    // 1. DATOS REALES EXTRAÍDOS DEL REPORTE MARC PALAS (CHM MINERÍA)
+    // BASE DE DATOS EMBEBIDA 100% FIEL A LOS 2 SLIDES DE LOOKER STUDIO + SHEETS ID
     // ============================================================================
     const SHEET_ID = '1QXfkPl43bffEq_oZ8aDCI7rKG9tdJsGWdka8RPecydw';
 
-    const state = {
-      hidePayroll: false,
-      targetMargin: 22.0,
-      monthsCost: ['1/26', '2/26', '3/26', '4/26', '5/26', '6/26', '7/26', '8/26', '9/26'],
-      // Ventas mensuales en Millones COP (calibrables o sincronizadas desde Google Sheets)
-      ventasM: [2650, 2650, 2650, 2650, 2650, 2650, 2650, 2650, 2650],
+    const db = {
+      // SLIDE 1: Control de Margen Bruto (1/26 a 12/26)
+      months12: ['1/26','2/26','3/26','4/26','5/26','6/26','7/26','8/26','9/26','10/26','11/26','12/26'],
+      ventasPlan:   [3491.3, 3213.6, 3600.9, 3575.2, 3540.3, 3454.4, 3605.7, 3569.2, 3518.9, 3631.8, null, null],
+      ventasReales: [3535.2, 3652.6, 4222.0, 3508.8, 3787.3, 3635.3, 3793.4, 4257.0, 3627.4, 3645.8, null, null],
+      margenPlan:   [27.8,   22.3,   31.5,   26.0,   28.0,   26.2,   28.6,   27.5,   26.5,   28.2,   null, null],
+      margenReal:   [33.2,   29.0,   41.2,   25.7,   33.7,   31.3,   33.9,   34.1,   23.5,   26.2,   null, null],
+      dispMeta:     [87.67,  87.90,  87.50,  87.80,  86.57,  85.95,  88.06,  86.70,  86.80,  89.10,  null, null],
+      dispReal:     [88.00,  89.80,  88.60,  87.37,  88.30,  87.70,  89.40,  87.80,  85.80,  89.30,  null, null],
+
+      comentariosSlide1: [
+        { mes: '11/26', texto: '', badge: '' },
+        { mes: '10/26', texto: '', badge: '' },
+        { mes: '9/26',  texto: '-1% de disponibilidad por debajo de lo ofrecido debido a Imprevistos.\nAjuste de salario, Bonificación, personal aprendiz cargado al contrato.', badge: 'CRÍTICO MARGEN (23,5%)' },
+        { mes: '8/26',  texto: 'Ingreso Bonificación ($643.268.161) 1er SEM', badge: 'BONIFICACIÓN 1S' },
+        { mes: '7/26',  texto: '', badge: '' },
+        { mes: '6/26',  texto: '241 horas adicionales al plan de los equipos H137, H146', badge: 'HORAS ADICIONALES' },
+        { mes: '5/26',  texto: '(FO) 338 horas bajo el concepto de SB durante la intervención de la Parada Anual H144', badge: 'PARADA ANUAL H144' },
+        { mes: '4/26',  texto: 'Impacto sobre el BUDGET del mes debido al ingreso de H150 a su Parada Anual, la cual estaba planeada en Marzo.\nAdicional hubo afectación sobre la disponibilidad ofrecida debido a imprevistos (Motor)', badge: 'PARADA H150 + MOTOR' },
+        { mes: '3/26',  texto: 'Sobre disp. por no ingresar la H150 a su Parada Anual (Permitiendo mayor disponibilidad e ingreso en la facturación del mes). Se facturó con tarifa de 19 Palas a pesar de que operaron 20 equipos, incluyendo la H138 en reemplazo de la H140 que estuvo Fuera de la Operación en su Parada Anual, excluyendo 315 Horas down).', badge: 'RÉCORD MARGEN (41,2%)' },
+        { mes: '2/26',  texto: 'Bonificación 2025 ($692,843,305)', badge: 'BONIFICACIÓN 2025' },
+        { mes: '1/26',  texto: '', badge: '' }
+      ],
+
+      // SLIDE 2: Costos (1/26 a 9/26) y Penalizaciones (1/26 a 11/26)
+      monthsCost: ['1/26','2/26','3/26','4/26','5/26','6/26','7/26','8/26','9/26'],
       costos: {
         personal:    [1471.0, 1499.0, 1472.0, 1686.0, 1449.0, 1493.0, 1507.0, 1582.0, 1760.0],
         operacional: [274.3,  283.0,  348.7,  268.6,  324.7,  296.6,  283.4,  503.1,  262.2],
         controlAF:   [191.8,  191.7,  203.6,  190.8,  191.1,  190.7,  188.6,  180.2,  176.0],
         ordenesServ: [30.0,   48.6,   39.9,   29.8,   53.2,   51.7,   34.1,   235.9,  33.1]
       },
+
       penalizaciones: [
-        { mes: '1/26',  total: 10677337, disp: 6,  recl: 4, seg: 0, concepto: 'PTO: Camión 227 Embrague; Camión 61 Correctivos Alternador.', tags: [] },
-        { mes: '2/26',  total: 4948515,  disp: 1,  recl: 4, seg: 0, concepto: 'PTO 61 (Fuga de aceite cigüeñal) 7,5 días · Camión 227 Arranque (11 días) · Camión 44 Mtto para certificación (11,5 días).', tags: [] },
-        { mes: '3/26',  total: 7655046,  disp: 8,  recl: 0, seg: 0, concepto: 'Afectación en disponibilidad de equipos de soporte ($8M).', tags: [] },
-        { mes: '4/26',  total: 14670840, disp: 13, recl: 2, seg: 0, concepto: 'PTO Indisp. Operador: 10,5d · Camión 44: 6d (Mtto Ptivo) · Camión 61: 10,5d (Eléctrico) · Camión 227: 7d (Embrague) + SOINTER 10,5d · Canasta Indisp. Operador: 5,5d · Canasta 21: 10d · Canasta 212: 20,5d (Motor).', tags: ['OPERATOR'] },
-        { mes: '5/26',  total: 8015935,  disp: 3,  recl: 5, seg: 0, concepto: 'Disponibilidad equipos de soporte ($3M) y Reclamos operativos ($5M).', tags: [] },
-        { mes: '6/26',  total: 8714161,  disp: 9,  recl: 0, seg: 0, concepto: 'Indisponibilidad de equipos de soporte ($9M).', tags: [] },
-        { mes: '7/26',  total: 14684882, disp: 11, recl: 4, seg: 0, concepto: 'Indisponibilidad de equipos de soporte ($11M) y Reclamos ($4M).', tags: [] },
-        { mes: '8/26',  total: 17844879, disp: 16, recl: 2, seg: 0, concepto: 'Aumento de indisponibilidad de flota de soporte ($16M) y Reclamos ($2M).', tags: ['CRITICAL'] },
-        { mes: '9/26',  total: 40082166, disp: 40, recl: 0, seg: 0, concepto: 'Canasta 212: 22 días Mantenimiento y 8 días sin Operador · Camión 227: 8 días sin operador, fallas por Cardán, fuga hidráulica, mofle partido y AA.', tags: ['CRITICAL', 'OPERATOR'] },
-        { mes: '10/26', total: 46422032, disp: 36, recl: 4, seg: 7, concepto: 'Canasta 212: Fuera de servicio por accidente con daño a la propiedad · Camión 227: 8 días sin operador, Cardán, fuga hca, mofle, AA · Hallazgo 1: Ventilador con empalme no certificado sin puesta a tierra · Hallazgo 4: Extensiones artesanales sin protección diferencial.', tags: ['CRITICAL', 'OPERATOR', 'SAFETY'] },
-        { mes: '11/26', total: 23075228, disp: 23, recl: 0, seg: 0, concepto: 'Camión 227 (Pasar a Canasta): Todo el mes fuera de operación · Camión 61: Fuera desde 7-Nov (AA deficiente y sistema eléctrico, sigue fuera) · Camión 44: 5d encendido, 0,5d llantas, 1d Mtto · Camión 228 (nuevo): Ingresó desde 11-Nov.', tags: ['CRITICAL'] }
+        { mes: '1/26',  total: 10677337, disp: 6.7,  recl: 4.0, seg: 0.0,prelim: false, concepto: 'PTO: Camión 227 Embrague; Camión 61 Correctivos Alternador.' },
+        { mes: '2/26',  total: 4948515,  disp: 0.9,  recl: 4.0, seg: 0.0, prelim: false, concepto: 'PTO 61 (Fuga de aceite cigüeñal) 7.5 días · Camión 227 Arranque (11 días) · Camión 44 Mtto para certificación (11.5 días).' },
+        { mes: '3/26',  total: 7655046,  disp: 7.7,  recl: 0.0, seg: 0.0, prelim: false, concepto: 'Indisponibilidad de equipos de soporte.' },
+        { mes: '4/26',  total: 14670840, disp: 12.7, recl: 2.0, seg: 0.0, prelim: false, concepto: 'PTO: Indisp Operador: 10.5d · Camión 44: 6d (Mtto Ptivo) · Camión 61: 10.5d (Eléctrico) · Camión 227: 7d (Embrague) + SOINTER: 10.5d · Canasta: Indisp Operador: 5.5d · Canasta 21: 10d (Mtto y Llantas) · Canasta 212: 20.5d (Motor).' },
+        { mes: '5/26',  total: 8015935,  disp: 3.0,  recl: 5.0, seg: 0.0, prelim: false, concepto: 'Indisponibilidad equipos de soporte y Reclamos operativos.' },
+        { mes: '6/26',  total: 8714161,  disp: 8.7,  recl: 0.0, seg: 0.0, prelim: false, concepto: 'Indisponibilidad equipos de soporte.' },
+        { mes: '7/26',  total: 14684882, disp: 10.7, recl: 4.0, seg: 0.0, prelim: false, concepto: 'Indisponibilidad equipos de soporte y Reclamos.' },
+        { mes: '8/26',  total: 17844879, disp: 15.8, recl: 2.0, seg: 0.0, prelim: false, concepto: 'Indisponibilidad equipos de soporte y Reclamos.' },
+        { mes: '9/26',  total: 40082166, disp: 40.1, recl: 0.0, seg: 0.0, prelim: false, concepto: 'Canasta 212 - 22 días Mantenimiento y 8 días sin Operador · Camión 227 - 8 días sin operador, fallas por Cardan, fuga hca, mofle partido y AA.' },
+        { mes: '10/26', total: 46422032, disp: 35.4, recl: 4.0, seg: 7.0, prelim: false, concepto: 'Canasta 212 - Fuera de servicio por accidente con daño a la propiedad · Camión 227 - 8 días sin operador, fallas por Cardan, fuga hca, mofle partido y AA · Hallazgo 1: Ventilador con empalme no certificado sin puesta a tierra · Hallazgo 4: Extensiones eléctricas artesanales sin protección diferencial.' },
+        { mes: '11/26', total: 23075228, disp: 23.1, recl: 0.0, seg: 0.0, prelim: true,  concepto: 'Camión 227 (Pasar a Canasta) Todo el mes fuera de operación · Camión 61 - Desde el 7 de Noviembre por fuera (AA deficiente y sistema eléctrico) A la fecha por fuera · Camión 44 - 5 días por encendido, 0.5 por llantas y 1 por Mtto · Camión 228 (nuevo): Ingresó desde 11 Noviembre.' }
       ]
     };
 
-    let pnlChartInstance = null;
-    let costShareChartInstance = null;
-    let costsBreakdownInstance = null;
-    let penaltiesChartInstance = null;
+    let uiState = {
+      costMode: 'line',      // 'line' | 'bar' | 'exPayroll'
+      includeNovPen: true    // true = 1/26..11/26 como Looker; false = cierre 10/26
+    };
+
+    let chartVM = null;
+    let chartDisp = null;
+    let chartCost = null;
+    let chartPen = null;
+
+    // Plugin ligero para pintar etiquetas de datos limpias estilo Looker Studio
+    const valueLabelsPlugin = {
+      id: 'valueLabelsPlugin',
+      afterDatasetsDraw(chart, args, pluginOptions) {
+        if (!pluginOptions || !pluginOptions.enabled) return;
+        const { ctx } = chart;
+        ctx.save();
+        chart.data.datasets.forEach((ds, dsIndex) => {
+          if (!ds.showDataLabels) return;
+          const meta = chart.getDatasetMeta(dsIndex);
+          if (meta.hidden) return;
+          meta.data.forEach((el, idx) => {
+            const val = ds.data[idx];
+            if (val === null || val === undefined) return;
+            ctx.font = ds.labelFont || '700 10px Inter, sans-serif';
+            ctx.fillStyle = ds.labelColor || '#0f172a';
+            ctx.textAlign = 'center';
+            const text = ds.labelFormatter ? ds.labelFormatter(val) : String(val);
+            const offsetY = ds.labelOffsetY !== undefined ? ds.labelOffsetY : -8;
+            ctx.fillText(text, el.x, el.y + offsetY);
+          });
+        });
+        ctx.restore();
+      }
+    };
+    Chart.register(valueLabelsPlugin);
 
     const fmtCOP = (n) => '$ ' + Math.round(n).toLocaleString('es-CO');
-    const fmtM = (n) => '$' + n.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' M';
+    const fmtM = (n) => n.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' M';
 
     // ============================================================================
-    // 2. CÁLCULOS FINANCIEROS Y RENDERIZADO SLIDE 1
+    // SLIDE 1: RENDERIZADO DE GRÁFICOS Y TABLAS
     // ============================================================================
-    function getMonthlyCostTotals() {
-      return state.monthsCost.map((_, i) =>
-        +(state.costos.personal[i] + state.costos.operacional[i] + state.costos.controlAF[i] + state.costos.ordenesServ[i]).toFixed(2)
-      );
-    }
+    function renderSlide1Charts() {
+      const fullYear = document.getElementById('chkFullYearAxis').checked;
+      const len = fullYear ? 12 : 10;
+      const labels = db.months12.slice(0, len);
 
-    function recalculateFinancials() {
-      const baseInput = parseFloat(document.getElementById('baseRevenueInput').value);
-      const targetInput = parseFloat(document.getElementById('targetMarginInput').value);
-      if (!isNaN(targetInput)) state.targetMargin = targetInput;
-
-      // Si no se ha sincronizado una serie distinta, actualiza uniforme
-      if (!state.customSalesLoaded && !isNaN(baseInput) && baseInput > 0) {
-        state.ventasM = state.monthsCost.map(() => baseInput);
-      }
-
-      renderSlide1();
-    }
-
-    function renderSlide1() {
-      const costTotals = getMonthlyCostTotals();
-      const penM = state.monthsCost.map((_, i) => +(state.penalizaciones[i].total / 1e6).toFixed(2));
-      const margenNetoM = state.monthsCost.map((_, i) => +(state.ventasM[i] - costTotals[i] - penM[i]).toFixed(2));
-      const margenPct = state.monthsCost.map((_, i) => state.ventasM[i] > 0 ? +((margenNetoM[i] / state.ventasM[i]) * 100).toFixed(1) : 0);
-
-      const sumVentas = state.ventasM.reduce((a, b) => a + b, 0);
-      const sumCostos = costTotals.reduce((a, b) => a + b, 0);
-      const sumPenEneSep = penM.reduce((a, b) => a + b, 0);
-      const sumMargen = sumVentas - sumCostos - sumPenEneSep;
-      const avgMargenPct = sumVentas > 0 ? (sumMargen / sumVentas) * 100 : 0;
-      const gap = avgMargenPct - state.targetMargin;
-
-      document.getElementById('kpiVentas').textContent = fmtM(sumVentas);
-      document.getElementById('kpiVentasSub').textContent = `Promedio: ${fmtM(sumVentas / 9)} / mes`;
-      document.getElementById('kpiCostos1').textContent = fmtM(sumCostos);
-      document.getElementById('kpiMargenPct').textContent = avgMargenPct.toFixed(1).replace('.', ',') + '%';
-      document.getElementById('kpiMargenVal').textContent = `(${fmtM(sumMargen)})`;
-
-      const gapEl = document.getElementById('kpiMargenGap');
-      gapEl.textContent = `Vs Meta (${state.targetMargin.toFixed(1)}%): ${gap >= 0 ? '+' : ''}${gap.toFixed(1)} pts`;
-      gapEl.className = `text-xs font-semibold mt-1.5 ${gap >= 0 ? 'text-emerald-600' : 'text-amber-600'}`;
-
-      // Renderizar Gráfico P&L Combo
-      const ctxPnl = document.getElementById('pnlChart').getContext('2d');
-      if (pnlChartInstance) pnlChartInstance.destroy();
-      pnlChartInstance = new Chart(ctxPnl, {
+      // 1. Gráfico Cumplimiento Ventas vs Margen Bruto
+      const ctxVM = document.getElementById('chartVentasMargen').getContext('2d');
+      if (chartVM) chartVM.destroy();
+      chartVM = new Chart(ctxVM, {
         type: 'bar',
         data: {
-          labels: state.monthsCost,
+          labels,
           datasets: [
             {
               type: 'line',
-              label: '% Margen Neto',
-              data: margenPct,
-              yAxisID: 'y1',
-              borderColor: '#059669',
-              backgroundColor: '#059669',
-              borderWidth: 3,
+              label: '% Margen Real',
+              data: db.margenReal.slice(0, len),
+              yAxisID: 'yPct',
+              borderColor: '#1e293b',
+              backgroundColor: '#1e293b',
+              pointBackgroundColor: db.margenReal.slice(0, len).map(v => v !== null && v < 26 ? '#dc2626' : '#1e293b'),
               pointRadius: 4,
-              tension: 0.3
+              borderWidth: 2.5,
+              tension: 0.15,
+              order: 1,
+              showDataLabels: true,
+              labelColor: '#0f172a',
+              labelOffsetY: -10,
+              labelFormatter: (v) => v.toFixed(1).replace('.', ',') + '%'
             },
             {
               type: 'line',
-              label: 'Meta Margen (%)',
-              data: state.monthsCost.map(() => state.targetMargin),
-              yAxisID: 'y1',
-              borderColor: '#f59e0b',
-              borderDash: [6, 4],
+              label: '% Margen Plan',
+              data: db.margenPlan.slice(0, len),
+              yAxisID: 'yPct',
+              borderColor: '#94a3b8',
+              borderDash: [5, 4],
+              pointRadius: 2.5,
               borderWidth: 2,
-              pointRadius: 0
+              tension: 0.15,
+              order: 2
             },
             {
-              label: 'Ventas ($M)',
-              data: state.ventasM,
-              backgroundColor: '#1d4ed8',
-              borderRadius: 5
+              type: 'bar',
+              label: 'Ventas Plan',
+              data: db.ventasPlan.slice(0, len),
+              yAxisID: 'ySales',
+              backgroundColor: '#9ca3af',
+              borderRadius: 3,
+              barPercentage: 0.85,
+              categoryPercentage: 0.76,
+              order: 3
             },
             {
-              label: 'Costos + Penalizaciones ($M)',
-              data: costTotals.map((c, i) => +(c + penM[i]).toFixed(1)),
-              backgroundColor: state.monthsCost.map((_, i) => i === 7 ? '#e11d48' : '#64748b'),
-              borderRadius: 5
+              type: 'bar',
+              label: 'Ventas Reales',
+              data: db.ventasReales.slice(0, len),
+              yAxisID: 'ySales',
+              backgroundColor: '#232f66',
+              borderRadius: 3,
+              barPercentage: 0.85,
+              categoryPercentage: 0.76,
+              order: 4,
+              showDataLabels: true,
+              labelFont: '600 9.5px Inter, sans-serif',
+              labelColor: '#1e3a8a',
+              labelOffsetY: -6,
+              labelFormatter: (v) => v.toLocaleString('es-CO', { maximumFractionDigits: 1 }) + 'M'
             }
           ]
         },
@@ -508,141 +543,80 @@
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } } },
+          plugins: {
+            legend: { display: false },
+            valueLabelsPlugin: { enabled: true },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  if (ctx.parsed.y === null) return null;
+                  return ctx.dataset.yAxisID === 'yPct'
+                    ? `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1).replace('.', ',')}%`
+                    : `${ctx.dataset.label}: $${fmtM(ctx.parsed.y)}`;
+                }
+              }
+            }
+          },
           scales: {
-            y: { beginAtZero: true, title: { display: true, text: 'Millones COP ($M)', font: { size: 11 } } },
-            y1: { position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Margen (%)', font: { size: 11 } } }
+            x: { grid: { display: false } },
+            ySales: {
+              position: 'left',
+              min: 0,
+              max: 8200, // Escala idéntica a Looker Studio para separar barras abajo y líneas de margen arriba
+              ticks: {
+                callback: (v) => v <= 4500 ? '$' + v.toLocaleString('es-CO') + 'M' : '',
+                font: { size: 10 }
+              },
+              grid: { color: '#f1f5f9' }
+            },
+            yPct: {
+              position: 'right',
+              min: -15,
+              max: 50,
+              ticks: {
+                callback: (v) => v >= 0 ? v + '%' : '',
+                font: { size: 10 }
+              },
+              grid: { drawOnChartArea: false }
+            }
           }
         }
       });
 
-      // Renderizar Donut Estructura de Costos
-      const sumPers = state.costos.personal.reduce((a, b) => a + b, 0);
-      const sumOper = state.costos.operacional.reduce((a, b) => a + b, 0);
-      const sumAF   = state.costos.controlAF.reduce((a, b) => a + b, 0);
-      const sumOS   = state.costos.ordenesServ.reduce((a, b) => a + b, 0);
-
-      const ctxShare = document.getElementById('costShareChart').getContext('2d');
-      if (costShareChartInstance) costShareChartInstance.destroy();
-      costShareChartInstance = new Chart(ctxShare, {
-        type: 'doughnut',
+      // 2. Gráfico Disponibilidad Meta vs Real
+      const ctxDisp = document.getElementById('chartDisponibilidad').getContext('2d');
+      if (chartDisp) chartDisp.destroy();
+      chartDisp = new Chart(ctxDisp, {
+        type: 'line',
         data: {
-          labels: ['Gasto Personal (73,2%)', 'Gasto Operacional (15,0%)', 'Control AF (9,0%)', 'Órdenes Servicio (2,9%)'],
-          datasets: [{
-            data: [sumPers, sumOper, sumAF, sumOS],
-            backgroundColor: ['#0f2537', '#2563eb', '#f59e0b', '#e11d48'],
-            borderWidth: 2,
-            borderColor: '#ffffff'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '64%',
-          plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 } } } }
-        }
-      });
-
-      // Renderizar Tabla P&L
-      const rows = [
-        { label: 'Ventas Facturadas ($M)', vals: state.ventasM, sum: sumVentas, cls: 'font-semibold text-blue-900' },
-        { label: '(-) Costo Total Operativo ($M)', vals: costTotals, sum: sumCostos, cls: 'text-slate-700' },
-        { label: '(-) Penalizaciones ($M)', vals: penM, sum: sumPenEneSep, cls: 'text-rose-600 font-medium' },
-        { label: '(=) Margen Bruto Neto ($M)', vals: margenNetoM, sum: sumMargen, cls: 'font-bold text-slate-900 bg-slate-50/80' },
-        { label: '% Margen Neto', vals: margenPct.map(v => v.toFixed(1) + '%'), sum: avgMargenPct.toFixed(1) + '%', cls: 'font-extrabold text-emerald-700 bg-emerald-50/40', raw: true }
-      ];
-
-      document.getElementById('pnlTableBody').innerHTML = rows.map(r => `
-        <tr class="${r.cls}">
-          <td class="py-2.5 px-4 text-left">${r.label}</td>
-          ${r.vals.map((v, idx) => `<td class="py-2.5 px-3 ${idx === 7 ? 'bg-rose-50/40' : idx === 8 ? 'bg-amber-50/40' : ''}">${r.raw ? v : v.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>`).join('')}
-          <td class="py-2.5 px-4 font-bold bg-slate-100">${r.raw ? r.sum : r.sum.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
-        </tr>
-      `).join('');
-    }
-
-    // ============================================================================
-    // 3. RENDERIZADO SLIDE 2 (COSTOS VARIABLES, PENALIZACIONES Y BITÁCORA)
-    // ============================================================================
-    function togglePayrollView() {
-      state.hidePayroll = !state.hidePayroll;
-      const btn = document.getElementById('btnTogglePayroll');
-      btn.textContent = state.hidePayroll
-        ? '↩ Mostrar Todos los Costos (Incluir Nómina)'
-        : '🔍 Aislar Costos Variables (Ocultar Nómina)';
-      renderCostsBreakdown();
-    }
-
-    function renderCostsBreakdown() {
-      const ctx = document.getElementById('costsBreakdownChart').getContext('2d');
-      if (costsBreakdownInstance) costsBreakdownInstance.destroy();
-
-      const datasets = [];
-      if (!state.hidePayroll) {
-        datasets.push({
-          label: 'Gasto de Personal',
-          data: state.costos.personal,
-          backgroundColor: '#1e3a5f',
-          borderRadius: 4
-        });
-      }
-      datasets.push(
-        { label: 'Gasto Operacional', data: state.costos.operacional, backgroundColor: '#2563eb', borderRadius: 4 },
-        { label: 'Control AF', data: state.costos.controlAF, backgroundColor: '#f59e0b', borderRadius: 4 },
-        { label: 'Órdenes de Servicio', data: state.costos.ordenesServ, backgroundColor: '#e11d48', borderRadius: 4 }
-      );
-
-      costsBreakdownInstance = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: state.monthsCost, datasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { position: 'top', labels: { boxWidth: 11, font: { size: 11 } } } },
-          scales: {
-            x: { stacked: true },
-            y: { stacked: true, title: { display: true, text: 'Millones COP ($M)', font: { size: 11 } } }
-          }
-        }
-      });
-    }
-
-    function renderPenaltiesChart() {
-      const ctx = document.getElementById('penaltiesChart').getContext('2d');
-      if (penaltiesChartInstance) penaltiesChartInstance.destroy();
-
-      penaltiesChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: state.penalizaciones.map(p => p.mes),
+          labels,
           datasets: [
             {
-              type: 'line',
-              label: 'Umbral Máx ($10M)',
-              data: state.penalizaciones.map(() => 10),
-              borderColor: '#dc2626',
-              borderDash: [5, 5],
+              label: 'Disponibilidad Real',
+              data: db.dispReal.slice(0, len),
+              borderColor: '#232f66',
+              backgroundColor: '#232f66',
+              pointBackgroundColor: db.dispReal.slice(0, len).map((v, i) =>
+                v !== null && db.dispMeta[i] !== null && v < db.dispMeta[i] ? '#dc2626' : '#232f66'
+              ),
+              pointRadius: db.dispReal.slice(0, len).map((v, i) =>
+                v !== null && db.dispMeta[i] !== null && v < db.dispMeta[i] ? 5.5 : 3.5
+              ),
+              borderWidth: 2.5,
+              tension: 0.15,
+              showDataLabels: true,
+              labelColor: '#1e293b',
+              labelOffsetY: -10,
+              labelFormatter: (v) => v.toString().replace('.', ',') + '%'
+            },
+            {
+              label: 'Meta de Disponibilidad',
+              data: db.dispMeta.slice(0, len),
+              borderColor: '#9ca3af',
+              borderDash: [5, 4],
+              pointRadius: 2.5,
               borderWidth: 2,
-              pointRadius: 0
-            },
-            {
-              label: 'Disponibilidad Equipos Soporte ($M)',
-              data: state.penalizaciones.map(p => p.disp),
-              backgroundColor: '#64748b',
-              borderRadius: 4
-            },
-            {
-              label: 'Reclamos ($M)',
-              data: state.penalizaciones.map(p => p.recl),
-              backgroundColor: '#1e40af',
-              borderRadius: 4
-            },
-            {
-              label: 'Seguridad HSEQ ($M)',
-              data: state.penalizaciones.map(p => p.seg),
-              backgroundColor: '#f59e0b',
-              borderRadius: 4
+              tension: 0.15
             }
           ]
         },
@@ -650,163 +624,305 @@
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { position: 'top', labels: { boxWidth: 11, font: { size: 11 } } } },
+          plugins: {
+            legend: { display: false },
+            valueLabelsPlugin: { enabled: true },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ctx.parsed.y !== null ? `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2).replace('.', ',')}%` : null
+              }
+            }
+          },
           scales: {
-            x: { stacked: true },
-            y: { stacked: true, title: { display: true, text: 'Millones COP ($M)', font: { size: 11 } } }
+            x: { grid: { display: false } },
+            y: {
+              min: 80,
+              max: 92,
+              ticks: { callback: (v) => v + '%', font: { size: 10 } },
+              grid: { color: '#f1f5f9' }
+            }
           }
         }
       });
     }
 
-    function renderPenaltiesTable() {
-      const q = (document.getElementById('searchPenalty').value || '').toLowerCase();
-      const sev = document.getElementById('filterSeverity').value;
+    function renderSlide1Comments() {
+      const q = (document.getElementById('searchSlide1Comments').value || '').toLowerCase();
+      const rows = db.comentariosSlide1.filter(r =>
+        r.mes.toLowerCase().includes(q) || r.texto.toLowerCase().includes(q) || r.badge.toLowerCase().includes(q)
+      );
 
-      const filtered = [...state.penalizaciones].reverse().filter(item => {
-        const matchText = item.mes.toLowerCase().includes(q) || item.concepto.toLowerCase().includes(q);
-        const matchSev =
-          sev === 'ALL' ? true :
-          sev === 'CRITICAL' ? item.total >= 15000000 :
-          item.tags.includes(sev);
-        return matchText && matchSev;
-      });
-
-      document.getElementById('penaltiesTableBody').innerHTML = filtered.map(item => {
-        const isHigh = item.total >= 20000000;
-        const badgeCls = isHigh
+      document.getElementById('slide1CommentsBody').innerHTML = rows.map(r => {
+        const badgeColor = r.badge.includes('CRÍTICO') || r.badge.includes('MOTOR')
           ? 'bg-rose-100 text-rose-800 border-rose-200'
-          : item.total >= 14000000
-          ? 'bg-amber-100 text-amber-800 border-amber-200'
-          : 'bg-slate-100 text-slate-700 border-slate-200';
+          : r.badge.includes('RÉCORD') || r.badge.includes('BONIFICACIÓN')
+          ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+          : 'bg-blue-100 text-blue-800 border-blue-200';
 
         return `
-          <tr class="hover:bg-slate-50/80 align-top">
-            <td class="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">${item.mes}</td>
-            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-              <span class="px-2.5 py-1 rounded-lg font-bold text-xs border ${badgeCls}">
-                ${fmtCOP(item.total)}
-              </span>
-            </td>
-            <td class="py-3.5 px-4 text-center whitespace-nowrap text-xs font-semibold text-slate-600">
-              <span title="Disponibilidad">${item.disp}M</span> ·
-              <span class="text-blue-700" title="Reclamos">${item.recl}M</span> ·
-              <span class="${item.seg > 0 ? 'text-amber-600 font-extrabold' : ''}" title="Seguridad">${item.seg}M</span>
-            </td>
-            <td class="py-3.5 px-4 text-slate-700 leading-relaxed">
-              ${item.concepto}
-              ${item.tags.includes('SAFETY') ? '<span class="ml-1 inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500 text-white">ALERTA HSEQ</span>' : ''}
-              ${item.tags.includes('OPERATOR') ? '<span class="ml-1 inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-600 text-white">BRECHA OPERADOR</span>' : ''}
+          <tr class="hover:bg-slate-50 align-top">
+            <td class="py-2.5 px-3 font-bold text-slate-800 whitespace-nowrap">${r.mes}</td>
+            <td class="py-2.5 px-3 text-slate-700 leading-relaxed whitespace-pre-line">
+              ${r.badge ? `<span class="inline-block mb-1 text-[10px] font-bold px-2 py-0.5 rounded border ${badgeColor}">${r.badge}</span><br/>` : ''}
+              ${r.texto || '<span class="text-slate-300 italic">Sin novedad registrada</span>'}
             </td>
           </tr>
         `;
       }).join('');
     }
 
+    function renderSlide1NumericTable() {
+      const vp = db.ventasPlan.slice(0, 10);
+      const vr = db.ventasReales.slice(0, 10);
+      const mp = db.margenPlan.slice(0, 10);
+      const mr = db.margenReal.slice(0, 10);
+      const dm = db.dispMeta.slice(0, 10);
+      const dr = db.dispReal.slice(0, 10);
+
+      const sumVP = vp.reduce((a, b) => a + b, 0);
+      const sumVR = vr.reduce((a, b) => a + b, 0);
+      const sumMB = vr.reduce((acc, v, i) => acc + (v * mr[i] / 100), 0);
+      const avgMR = (sumMB / sumVR) * 100;
+      const avgMP = mp.reduce((a, b) => a + b, 0) / 10;
+      const avgDM = dm.reduce((a, b) => a + b, 0) / 10;
+      const avgDR = dr.reduce((a, b) => a + b, 0) / 10;
+
+      const tr = (title, arr, totalStr, fmtFn, rowCls = '') => `
+        <tr class="${rowCls}">
+          <td class="py-2 px-4 text-left font-semibold">${title}</td>
+          ${arr.map((v, idx) => `<td class="py-2 px-2.5 ${idx === 8 ? 'bg-rose-50/70' : ''}">${fmtFn(v)}</td>`).join('')}
+          <td class="py-2 px-3 font-bold bg-slate-100">${totalStr}</td>
+        </tr>
+      `;
+
+      document.getElementById('slide1NumericBody').innerHTML = [
+        tr('Ventas Plan ($M)', vp, fmtM(sumVP), v => v.toLocaleString('es-CO', { minimumFractionDigits: 1 }), 'text-slate-600'),
+        tr('Ventas Reales ($M)', vr, fmtM(sumVR), v => v.toLocaleString('es-CO', { minimumFractionDigits: 1 }), 'font-bold text-slate-900'),
+        tr('% Margen Plan (Ref)', mp, avgMP.toFixed(1).replace('.', ',') + '%', v => v.toFixed(1).replace('.', ',') + '%', 'text-slate-500'),
+        tr('% Margen Real', mr, avgMR.toFixed(1).replace('.', ',') + '%', v => v.toFixed(1).replace('.', ',') + '%', 'font-bold text-blue-900 bg-blue-50/30'),
+        tr('Meta Disponibilidad (%)', dm, avgDM.toFixed(2).replace('.', ',') + '%', v => v.toFixed(2).replace('.', ',') + '%', 'text-slate-600'),
+        tr('Disponibilidad Real (%)', dr, avgDR.toFixed(2).replace('.', ',') + '%', v => v.toFixed(2).replace('.', ',') + '%', 'font-bold text-emerald-800')
+      ].join('');
+    }
+
+    function toggleSlide1DataTable() {
+      document.getElementById('slide1NumericTableCard').classList.toggle('hidden');
+    }
+
     // ============================================================================
-    // 4. NAVEGACIÓN Y CONECTOR GOOGLE SHEETS (JSONP SIN BLOQUEO CORS)
+    // SLIDE 2: RENDERIZADO DE COSTOS Y PENALIZACIONES
     // ============================================================================
-    function switchSlide(num) {
-      document.getElementById('slide1').classList.toggle('hidden', num !== 1);
-      document.getElementById('slide2').classList.toggle('hidden', num !== 2);
-      document.getElementById('btnSlide1').className = `px-3.5 py-2 rounded-lg text-xs sm:text-sm transition-all ${num === 1 ? 'tab-active' : 'tab-inactive'}`;
-      document.getElementById('btnSlide2').className = `px-3.5 py-2 rounded-lg text-xs sm:text-sm transition-all ${num === 2 ? 'tab-active' : 'tab-inactive'}`;
-      if (num === 2) {
-        renderCostsBreakdown();
-        renderPenaltiesChart();
-        renderPenaltiesTable();
+    function setCostMode(mode) {
+      uiState.costMode = mode;
+      document.getElementById('btnCostLine').className = mode === 'line'
+        ? 'text-[11px] px-2.5 py-1 rounded font-bold bg-[#1b3664] text-white'
+        : 'text-[11px] px-2.5 py-1 rounded font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
+      document.getElementById('btnCostBar').className = mode === 'bar'
+        ? 'text-[11px] px-2.5 py-1 rounded font-bold bg-[#1b3664] text-white'
+        : 'text-[11px] px-2.5 py-1 rounded font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
+      document.getElementById('btnCostVar').className = mode === 'exPayroll'
+        ? 'text-[11px] px-2.5 py-1 rounded font-bold bg-indigo-700 text-white'
+        : 'text-[11px] px-2.5 py-1 rounded font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100';
+      renderSlide2Charts();
+    }
+
+    function toggleNovCut() {
+      uiState.includeNovPen = !uiState.includeNovPen;
+      const btn = document.getElementById('btnCutNov');
+      if (uiState.includeNovPen) {
+        btn.textContent = 'Corte Penalizaciones: Ene–Nov ($196,8M - Tal cual Looker)';
+        btn.className = 'text-[11px] bg-amber-400 text-slate-950 font-bold px-2.5 py-1 rounded transition';
+        document.getElementById('s2BadgeCut').textContent = '1/26 – 11/26';
+        document.getElementById('s2KpiPenTotal').textContent = '$196.791.021';
       } else {
-        renderSlide1();
+        btn.textContent = 'Corte Penalizaciones: Cerrado Ene–Oct ($173,7M)';
+        btn.className = 'text-[11px] bg-emerald-400 text-slate-950 font-bold px-2.5 py-1 rounded transition';
+        document.getElementById('s2BadgeCut').textContent = 'Cerrado 10/26';
+        document.getElementById('s2KpiPenTotal').textContent = '$173.715.793';
       }
+      renderSlide2Charts();
+      renderSlide2PenaltiesTable();
     }
 
-    function openDataModal() {
-      document.getElementById('dataModal').classList.remove('hidden');
-      document.getElementById('dataModal').classList.add('flex');
-    }
+    function renderSlide2Charts() {
+      // 1. Gráfico de Costos por Cuentas
+      const ctxC = document.getElementById('chartCostos').getContext('2d');
+      if (chartCost) chartCost.destroy();
 
-    function closeDataModal() {
-      document.getElementById('dataModal').classList.add('hidden');
-      document.getElementById('dataModal').classList.remove('flex');
-    }
+      const isLine = uiState.costMode === 'line';
+      const isStacked = uiState.costMode === 'bar' || uiState.costMode === 'exPayroll';
+      const datasetsCost = [];
 
-    // Respuesta JSONP de Google Visualization API
-    window.onSheetDataResponse = function(response) {
-      const msg = document.getElementById('sheetStatusMsg');
-      if (!response || response.status === 'error' || !response.table) {
-        msg.textContent = '⚠️ La hoja requiere permisos públicos o pegar los datos manualmente abajo.';
-        msg.className = 'text-xs font-semibold text-amber-600';
-        return;
+      if (uiState.costMode !== 'exPayroll') {
+        datasetsCost.push({
+          label: 'Gasto de Personal',
+          data: db.costos.personal,
+          borderColor: '#232f66',
+          backgroundColor: isLine ? '#232f66' : '#232f66',
+          borderWidth: 2.5,
+          pointRadius: 3.5,
+          tension: 0.15,
+          showDataLabels: isLine,
+          labelColor: '#232f66',
+          labelOffsetY: -9,
+          labelFormatter: v => Math.round(v) + 'M'
+        });
       }
 
-      const cols = response.table.cols.map(c => (c.label || '').toLowerCase());
-      const rows = response.table.rows;
-      const ventaIdx = cols.findIndex(c => c.includes('venta') || c.includes('ingreso') || c.includes('factur'));
-
-      if (ventaIdx !== -1 && rows.length > 0) {
-        const extracted = rows.slice(0, 9).map(r => {
-          const val = r.c[ventaIdx] ? Number(r.c[ventaIdx].v) : 0;
-          return val > 100000 ? +(val / 1e6).toFixed(2) : +val.toFixed(2);
-        }).filter(v => v > 0);
-
-        if (extracted.length > 0) {
-          while (extracted.length < 9) extracted.push(extracted[extracted.length - 1]);
-          state.ventasM = extracted.slice(0, 9);
-          state.customSalesLoaded = true;
-          renderSlide1();
-          document.getElementById('syncBadge').textContent = '✓ Conectado a Google Sheets';
-          document.getElementById('syncBadge').className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
-          msg.textContent = `✓ Sincronización exitosa: ${rows.length} registros leídos de Google Sheets.`;
-          msg.className = 'text-xs font-semibold text-emerald-600';
-          return;
+      datasetsCost.push(
+        {
+          label: 'Gasto Operacional',
+          data: db.costos.operacional,
+          borderColor: '#3b82f6',
+          backgroundColor: '#3b82f6',
+          borderWidth: 2.2,
+          pointRadius: 3.5,
+          tension: 0.15,
+          showDataLabels: uiState.costMode !== 'bar',
+          labelColor: '#1d4ed8',
+          labelOffsetY: -8,
+          labelFormatter: v => Math.round(v) + 'M'
+        },
+        {
+          label: 'Control AF',
+          data: db.costos.controlAF,
+          borderColor: '#f59e0b',
+          backgroundColor: '#f59e0b',
+          borderWidth: 2,
+          pointRadius: 3,
+          tension: 0.15
+        },
+        {
+          label: 'Órdenes de Servicio',
+          data: db.costos.ordenesServ,
+          borderColor: '#e11d48',
+          backgroundColor: '#e11d48',
+          borderWidth: 2,
+          pointRadius: 3.5,
+          tension: 0.15,
+          showDataLabels: uiState.costMode === 'exPayroll',
+          labelColor: '#be123c',
+          labelOffsetY: -8,
+          labelFormatter: v => v.toFixed(0) + 'M'
         }
-      }
+      );
 
-      document.getElementById('syncBadge').textContent = '✓ Sheet Leído (Verificar Columna Ventas)';
-      msg.textContent = `Hoja conectada (${rows.length} filas), pero no se detectó una columna llamada "Ventas". Usa la Opción 2 o indica la pestaña exacta.`;
-      msg.className = 'text-xs font-semibold text-blue-600';
-    };
+      chartCost = new Chart(ctxC, {
+        type: isLine ? 'line' : 'bar',
+        data: { labels: db.monthsCost, datasets: datasetsCost },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 11, font: { size: 11 } } },
+            valueLabelsPlugin: { enabled: true },
+            tooltip: {
+              callbacks: { label: (ctx) => `${ctx.dataset.label}: $${fmtM(ctx.parsed.y)}` }
+            }
+          },
+          scales: {
+            x: { stacked: isStacked, grid: { display: false } },
+            y: {
+              stacked: isStacked,
+              beginAtZero: true,
+              ticks: { callback: v => '$' + v.toLocaleString('es-CO') + 'M', font: { size: 10 } },
+              grid: { color: '#f1f5f9' }
+            }
+          }
+        }
+      });
 
-    function connectGoogleSheet() {
-      const tab = document.getElementById('sheetTabName').value.trim();
-      const msg = document.getElementById('sheetStatusMsg');
-      msg.textContent = 'Conectando con Google Sheets...';
-      msg.className = 'text-xs font-semibold text-blue-600';
+      // 2. Gráfico de Penalizaciones
+      const penSlice = uiState.includeNovPen ? db.penalizaciones : db.penalizaciones.slice(0, 10);
+      const ctxP = document.getElementById('chartPenalizaciones').getContext('2d');
+      if (chartPen) chartPen.destroy();
 
-      const oldScript = document.getElementById('gvizScript');
-      if (oldScript) oldScript.remove();
-
-      const script = document.createElement('script');
-      script.id = 'gvizScript';
-      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:onSheetDataResponse${tab ? '&sheet=' + encodeURIComponent(tab) : ''}`;
-      script.onerror = () => {
-        msg.textContent = '🔒 Acceso restringido por dominio (@somosgrupo-a.com). Usa la Opción 2 pegando los valores de Ventas o comparte el Sheet como "Cualquier persona con el enlace".';
-        msg.className = 'text-xs font-semibold text-amber-600';
-      };
-      document.body.appendChild(script);
+      chartPen = new Chart(ctxP, {
+        type: 'bar',
+        data: {
+          labels: penSlice.map(p => p.prelim ? p.mes + '*' : p.mes),
+          datasets: [
+            {
+              label: 'Disponibilidad Equipos de Soporte',
+              data: penSlice.map(p => p.disp),
+              backgroundColor: penSlice.map(p => p.prelim ? '#cbd5e1' : '#8c8c8c'),
+              borderColor: penSlice.map(p => p.prelim ? '#64748b' : 'transparent'),
+              borderWidth: penSlice.map(p => p.prelim ? 1.5 : 0),
+              borderRadius: 3
+            },
+            {
+              label: 'Reclamos',
+              data: penSlice.map(p => p.recl),
+              backgroundColor: '#232f66',
+              borderRadius: 3
+            },
+            {
+              label: 'Seguridad',
+              data: penSlice.map(p => p.seg),
+              backgroundColor: '#f59e0b',
+              borderRadius: 3,
+              showDataLabels: true,
+              labelColor: '#0f172a',
+              labelOffsetY: -6,
+              labelFormatter: (_, idx) => {
+                // Etiqueta total en la cima de cada barra apilada
+                return '';
+              }
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                afterBody: (items) => {
+                  const p = penSlice[items[0].dataIndex];
+                  return `Total Mes: ${fmtCOP(p.total)}${p.prelim ? ' (Preliminar en curso)' : ''}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { stacked: true, grid: { display: false } },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              max: 52,
+              ticks: { callback: v => '$' + v + 'M', font: { size: 10 } },
+              grid: { color: '#f1f5f9' }
+            }
+          }
+        },
+        plugins: [{
+          id: 'stackedTotals',
+          afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            const metaTop = chart.getDatasetMeta(2);
+            ctx.save();
+            ctx.font = '700 10px Inter, sans-serif';
+            ctx.fillStyle = '#1e293b';
+            ctx.textAlign = 'center';
+            metaTop.data.forEach((bar, i) => {
+              const totalM = Math.round(penSlice[i].total / 1e6);
+              ctx.fillText(totalM + ' M', bar.x, bar.y - 6);
+            });
+            ctx.restore();
+          }
+        }]
+      });
     }
 
-    function applyPastedSales() {
-      const raw = document.getElementById('pasteSalesInput').value.trim();
-      const nums = raw.split(/[\s,;|\t]+/).map(x => parseFloat(x.replace(/\./g, '').replace(',', '.'))).filter(n => !isNaN(n) && n > 0);
-      if (nums.length === 0) return;
+    function renderSlide2PenaltiesTable() {
+      const q = (document.getElementById('searchSlide2Penalties').value || '').toLowerCase();
+      const base = uiState.includeNovPen ? db.penalizaciones : db.penalizaciones.slice(0, 10);
+      const rows = [...base].reverse().filter(p =>
+        p.mes.toLowerCase().includes(q) || p.concepto.toLowerCase().includes(q)
+      );
 
-      const normalized = nums.map(v => v > 100000 ? +(v / 1e6).toFixed(2) : v);
-      while (normalized.length < 9) normalized.push(normalized[normalized.length - 1]);
-      state.ventasM = normalized.slice(0, 9);
-      state.customSalesLoaded = true;
-
-      renderSlide1();
-      document.getElementById('syncBadge').textContent = '✓ Ventas Reales Cargadas';
-      document.getElementById('syncBadge').className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
-      closeDataModal();
-    }
-
-    // Inicialización automática al abrir el archivo
-    window.addEventListener('DOMContentLoaded', () => {
-      renderSlide1();
-      connectGoogleSheet();
-    });
-  </script>
-</body>
-</html>
+      document.getElementById('slide2PenaltiesBody').innerHTML = rows.map(p => {
+        const isCritical = p.total >= 20000000

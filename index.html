@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marc Palas - Control de Margen Bruto y Costos</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --navy: #2d2a6e;
@@ -75,7 +76,7 @@
           <div class="chart-box tall"><canvas id="chVentas"></canvas></div>
         </div>
         <div class="card">
-          <h2>Disponibilidad</h2>
+          <h2>Disponibilidad y Tiempo F</h2>
           <div class="chart-box"><canvas id="chDisp"></canvas></div>
         </div>
       </div>
@@ -96,13 +97,13 @@
       <div class="table-scroll">
         <table>
           <thead>
-            <tr><th>Mes</th><th class="num">Ventas Plan</th><th class="num">Ventas Reales</th><th class="num">% Margen Plan</th><th class="num">% Margen Real</th><th class="num">Meta Disp.</th><th class="num">Disp. Real</th></tr>
+            <tr><th>Mes</th><th class="num">Ventas Plan</th><th class="num">Ventas Reales</th><th class="num">% Margen Plan</th><th class="num">% Margen Real</th><th class="num">Meta Disp.</th><th class="num">Disp. Real</th><th class="num">Tiempo F</th></tr>
           </thead>
           <tbody id="detalle1"></tbody>
         </table>
       </div>
     </div>
-    <div class="footer">Fuente: datos del reporte original (Looker Studio / BD link). Montos en millones (M).</div>
+    <div class="footer">Fuente: datos del reporte original (Looker Studio / BD link) y hoja "Margen MARC". Montos en millones (M).</div>
   </main>
 </section>
 
@@ -150,7 +151,7 @@
 
 <script>
 /* ============================================================
-   DATOS (transcritos del reporte original)
+   DATOS (transcritos del reporte original y de la hoja cargada)
    ============================================================ */
 const MESES = ["1/26","2/26","3/26","4/26","5/26","6/26","7/26","8/26","9/26","10/26","11/26","12/26"];
 
@@ -163,6 +164,9 @@ const margenReal   = [33.2, 29.0, 41.2, 25.7, 33.7, 31.3, 33.9, 34.1, 23.5, 26.2
 // Disponibilidad (1/26 – 10/26)
 const dispMeta = [87.67, 87.9, 87.5, 87.8, 86.57, 85.95, 88.06, 86.7, 86.8, 89.1];
 const dispReal = [88.0, 89.8, 88.6, 87.37, 88.3, 87.7, 89.4, 87.8, 85.8, 89.3];
+
+// Tiempo F (columna de la hoja "Margen MARC"), 1/26 – 10/26
+const tiempoF = [111.6, 123.4, 60, 150.6, 87.7, 125, 420.5, 74.4, 173.3, 129.6];
 
 // Comentarios por mes
 const comentarios = {
@@ -185,7 +189,7 @@ const gastoOper     = [274.3, 283, 348.7, 268.6, 324.7, 296.6, 283.4, 503.1, 262
 const controlAF     = [191.8, 191.7, 203.6, 190.8, 191.1, 190.7, 188.6, 180.2, 176];
 const ordenesServ   = [30, 48.6, 39.9, 29.8, 53.2, 51.7, 34.1, 235.9, 33.1];
 
-// Penalizaciones por tipo (M), leídas de las etiquetas del gráfico original
+// Penalizaciones por tipo (M), de la hoja "PENALIZACIONES 2026" redondeadas a millones
 const penSoporte  = [6, 1, 8, 13, 3, 9, 11, 16, 40, 36, 23];
 const penReclamos = [4, 4, 0, 2, 5, 0, 4, 2, 0, 4, 0];
 const penSeguridad= [0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0];
@@ -212,13 +216,17 @@ const penConceptos = {
    ============================================================ */
 const fmtM = v => v == null ? "" : v.toLocaleString("es-CO", {minimumFractionDigits: 1, maximumFractionDigits: 1}) + " M";
 const fmtCOP = v => "$ " + v.toLocaleString("es-CO");
-const fmtPct = v => v == null ? "" : v.toLocaleString("es-CO", {minimumFractionDigits: 1, maximumFractionDigits: 2}) + " %";
+const fmtPct = v => v == null ? "" : v.toLocaleString("es-CO", {minimumFractionDigits: 0, maximumFractionDigits: 2}) + " %";
 const pad = (arr, n) => [...arr, ...Array(n - arr.length).fill(null)];
 const sum = a => a.reduce((x, y) => x + (y || 0), 0);
-const NAVY = "#2d2a6e", NAVY_SOFT = "#6f6ca8", GREY = "#a6a6a6", GOLD = "#f2b705", RED = "#c0392b";
+const maxOf = a => Math.max(...a.filter(v => v != null));
+const NAVY = "#2d2a6e", NAVY_SOFT = "#6f6ca8", GREY = "#a6a6a6", GOLD = "#f2b705";
 
+// Registra el plugin de etiquetas y define el estilo base
+Chart.register(ChartDataLabels);
 Chart.defaults.font.family = '"Segoe UI", Roboto, Arial, sans-serif';
 Chart.defaults.color = "#444";
+Chart.defaults.plugins.datalabels.display = false; // se activa por dataset
 
 /* ============================================================
    KPIs
@@ -247,17 +255,24 @@ document.getElementById("kpis2").innerHTML = [
 
 /* ============================================================
    PÁGINA 1: gráficos y tablas
+   Las barras van en la parte inferior del gráfico y las líneas
+   en la superior, cada una con su propio eje, para que no se crucen.
    ============================================================ */
+
+// Ventas: barras abajo (eje y amplio), márgenes arriba (eje y1 desplazado)
 new Chart(document.getElementById("chVentas"), {
   type: "bar",
   data: {
     labels: MESES,
     datasets: [
-      { label: "Ventas Plan", data: pad(ventasPlan, 12), backgroundColor: GREY, borderRadius: 3, yAxisID: "y", order: 3 },
-      { label: "Ventas Reales", data: pad(ventasReales, 12), backgroundColor: NAVY, borderRadius: 3, yAxisID: "y", order: 3 },
-      { label: "% Margen Plan", type: "line", data: pad(margenPlan, 12), borderColor: GREY, borderDash: [6, 4], pointRadius: 0, yAxisID: "y1", tension: .3, order: 1 },
+      { label: "Ventas Plan", data: pad(ventasPlan, 12), backgroundColor: GREY, borderRadius: 3, maxBarThickness: 22, yAxisID: "y", order: 3,
+        datalabels: { display: true, anchor: "end", align: "top", color: "#555", font: { size: 9 }, formatter: v => v == null ? "" : fmtM(v) } },
+      { label: "Ventas Reales", data: pad(ventasReales, 12), backgroundColor: NAVY, borderRadius: 3, maxBarThickness: 22, yAxisID: "y", order: 3,
+        datalabels: { display: true, anchor: "end", align: "top", color: NAVY, font: { size: 9, weight: "bold" }, formatter: v => v == null ? "" : fmtM(v) } },
+      { label: "% Margen Plan", type: "line", data: pad(margenPlan, 12), borderColor: GREY, borderDash: [6, 4], pointRadius: 0, yAxisID: "y1", tension: .3, order: 1,
+        datalabels: { display: false } },
       { label: "% Margen Real", type: "line", data: pad(margenReal, 12), borderColor: NAVY, backgroundColor: NAVY, pointRadius: 4, tension: .3, yAxisID: "y1", order: 1,
-        datalabels: {} }
+        datalabels: { display: true, anchor: "end", align: "top", offset: 4, color: NAVY, font: { size: 10, weight: "bold" }, formatter: v => v == null ? "" : v.toLocaleString("es-CO", {maximumFractionDigits: 1}) + " %" } }
     ]
   },
   options: {
@@ -272,29 +287,45 @@ new Chart(document.getElementById("chVentas"), {
       } }
     },
     scales: {
-      y: { title: { display: true, text: "Ventas Plan | Ventas Reales (M)" }, beginAtZero: true,
-           ticks: { callback: v => v.toLocaleString("es-CO") } },
-      y1: { position: "right", title: { display: true, text: "% Margen Plan | % Margen Real" },
+      y: { position: "left", beginAtZero: true, max: maxOf(ventasReales) * 2.2,
+           title: { display: true, text: "Ventas Plan | Ventas Reales (M)" },
+           ticks: { callback: v => v >= 0 ? v.toLocaleString("es-CO") : "" } },
+      y1: { position: "right", min: -60, max: 45,
+            title: { display: true, text: "% Margen Plan | % Margen Real" },
+            ticks: { callback: v => v >= 0 ? v + " %" : "" },
             grid: { drawOnChartArea: false } }
     }
   }
 });
 
+// Disponibilidad: líneas arriba (eje y con rango ajustado), barras de Tiempo F abajo (eje y1)
 new Chart(document.getElementById("chDisp"), {
   type: "line",
   data: {
     labels: MESES,
     datasets: [
-      { label: "Meta de Disponibilidad", data: pad(dispMeta, 12), borderColor: GREY, borderDash: [6, 4], pointRadius: 0, tension: .3 },
-      { label: "Disponibilidad Real", data: pad(dispReal, 12), borderColor: NAVY, backgroundColor: NAVY, pointRadius: 4, tension: .3 }
+      { label: "Meta de Disponibilidad", data: pad(dispMeta, 12), borderColor: GREY, borderDash: [6, 4], pointRadius: 0, tension: .3, yAxisID: "y", order: 1,
+        datalabels: { display: false } },
+      { label: "Disponibilidad Real", data: pad(dispReal, 12), borderColor: NAVY, backgroundColor: NAVY, pointRadius: 4, tension: .3, yAxisID: "y", order: 1,
+        datalabels: { display: true, anchor: "end", align: "top", offset: 4, color: NAVY, font: { size: 10, weight: "bold" }, formatter: v => v == null ? "" : fmtPct(v) } },
+      { label: "Tiempo F", type: "bar", data: pad(tiempoF, 12), backgroundColor: "rgba(242,183,5,0.7)", borderColor: GOLD, borderWidth: 1, borderRadius: 3, maxBarThickness: 22, yAxisID: "y1", order: 2,
+        datalabels: { display: true, anchor: "end", align: "top", color: "#7a5b00", font: { size: 9, weight: "bold" }, formatter: v => v == null ? "" : v.toLocaleString("es-CO", {maximumFractionDigits: 1}) } }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
     plugins: { legend: { position: "bottom" },
-      tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y} %` } } },
+      tooltip: { callbacks: { label: c => c.dataset.yAxisID === "y1"
+        ? `${c.dataset.label}: ${c.parsed.y.toLocaleString("es-CO")}`
+        : `${c.dataset.label}: ${c.parsed.y} %` } } },
     scales: {
-      y: { min: 80, title: { display: true, text: "Disponibilidad (%)" }, ticks: { callback: v => v + " %" } }
+      // Líneas en la mitad superior: rango 70–92 % para dejar espacio abajo a las barras
+      y: { min: 70, max: 92, position: "left", title: { display: true, text: "Disponibilidad (%)" }, ticks: { callback: v => v + " %" } },
+      // Barras en la mitad inferior: máximo = 2.2 × el valor más alto de Tiempo F
+      y1: { position: "right", beginAtZero: true, max: maxOf(tiempoF) * 2.2, title: { display: true, text: "Tiempo F" },
+            ticks: { callback: v => v.toLocaleString("es-CO", {maximumFractionDigits: 0}) },
+            grid: { drawOnChartArea: false } }
     }
   }
 });
@@ -313,6 +344,7 @@ document.getElementById("detalle1").innerHTML = ventasPlan.map((p, i) => `
     <td class="num ${margenReal[i] < 30 ? "neg" : "pos"}">${margenReal[i].toFixed(1)} %</td>
     <td class="num">${dispMeta[i].toFixed(2)} %</td>
     <td class="num ${dispReal[i] < dispMeta[i] ? "neg" : "pos"}">${dispReal[i].toFixed(2)} %</td>
+    <td class="num">${tiempoF[i].toLocaleString("es-CO", {maximumFractionDigits: 1})}</td>
   </tr>`).join("");
 
 /* ============================================================
@@ -324,10 +356,14 @@ new Chart(document.getElementById("chCostos"), {
   data: {
     labels: MESES,
     datasets: [
-      { label: "Gasto de personal", data: pad(gastoPersonal, 12), borderColor: GREY, backgroundColor: GREY, tension: .3, pointRadius: 4, yAxisID: "y" },
-      { label: "Gasto operacional", data: pad(gastoOper, 12), borderColor: NAVY, backgroundColor: NAVY, tension: .3, pointRadius: 4, yAxisID: "y2" },
-      { label: "Control AF", data: pad(controlAF, 12), borderColor: GOLD, backgroundColor: GOLD, tension: .3, pointRadius: 0, yAxisID: "y2" },
-      { label: "Órdenes de servicio", data: pad(ordenesServ, 12), borderColor: "#1f8ef1", backgroundColor: "#1f8ef1", tension: .3, pointRadius: 4, yAxisID: "y2" }
+      { label: "Gasto de personal", data: pad(gastoPersonal, 12), borderColor: GREY, backgroundColor: GREY, tension: .3, pointRadius: 4, yAxisID: "y",
+        datalabels: { display: true, anchor: "end", align: "top", color: "#555", font: { size: 9 }, formatter: v => v == null ? "" : fmtM(v) } },
+      { label: "Gasto operacional", data: pad(gastoOper, 12), borderColor: NAVY, backgroundColor: NAVY, tension: .3, pointRadius: 4, yAxisID: "y2",
+        datalabels: { display: true, anchor: "end", align: "top", color: NAVY, font: { size: 9 }, formatter: v => v == null ? "" : fmtM(v) } },
+      { label: "Control AF", data: pad(controlAF, 12), borderColor: GOLD, backgroundColor: GOLD, tension: .3, pointRadius: 3, yAxisID: "y2",
+        datalabels: { display: true, anchor: "start", align: "bottom", color: "#7a5b00", font: { size: 9 }, formatter: v => v == null ? "" : fmtM(v) } },
+      { label: "Órdenes de servicio", data: pad(ordenesServ, 12), borderColor: "#1f8ef1", backgroundColor: "#1f8ef1", tension: .3, pointRadius: 4, yAxisID: "y2",
+        datalabels: { display: true, anchor: "end", align: "bottom", color: "#1666b0", font: { size: 9 }, formatter: v => v == null ? "" : fmtM(v) } }
     ]
   },
   options: {
@@ -338,7 +374,7 @@ new Chart(document.getElementById("chCostos"), {
     scales: {
       y: { position: "left", beginAtZero: true, title: { display: true, text: "Gasto de personal (M)" },
            ticks: { callback: v => v.toLocaleString("es-CO") } },
-      y2: { position: "right", beginAtZero: true, title: { display: true, text: "Gasto operacional / Control AF / OS (M)" },
+      y2: { position: "right", beginAtZero: true, max: 600, title: { display: true, text: "Gasto operacional / Control AF / OS (M)" },
             grid: { drawOnChartArea: false } }
     }
   }
@@ -349,9 +385,12 @@ new Chart(document.getElementById("chPen"), {
   data: {
     labels: MESES,
     datasets: [
-      { label: "Disponibilidad equipos de soporte", data: pad(penSoporte, 12), backgroundColor: GREY, borderRadius: 3 },
-      { label: "Reclamos", data: pad(penReclamos, 12), backgroundColor: NAVY_SOFT, borderRadius: 3 },
-      { label: "Seguridad", data: pad(penSeguridad, 12), backgroundColor: GOLD, borderRadius: 3 }
+      { label: "Disponibilidad equipos de soporte", data: pad(penSoporte, 12), backgroundColor: GREY, borderRadius: 3, maxBarThickness: 26,
+        datalabels: { display: true, anchor: "center", align: "center", color: "#222", font: { size: 9, weight: "bold" }, formatter: v => v ? v + " M" : "" } },
+      { label: "Reclamos", data: pad(penReclamos, 12), backgroundColor: NAVY_SOFT, borderRadius: 3, maxBarThickness: 26,
+        datalabels: { display: true, anchor: "center", align: "center", color: "#fff", font: { size: 9, weight: "bold" }, formatter: v => v ? v + " M" : "" } },
+      { label: "Seguridad", data: pad(penSeguridad, 12), backgroundColor: GOLD, borderRadius: 3, maxBarThickness: 26,
+        datalabels: { display: true, anchor: "center", align: "center", color: "#222", font: { size: 9, weight: "bold" }, formatter: v => v ? v + " M" : "" } }
     ]
   },
   options: {

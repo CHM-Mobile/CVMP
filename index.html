@@ -6,6 +6,8 @@
 <title>Marc Palas - Control de Margen Bruto y Costos</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
   :root {
     --navy: #2d2a6e;
@@ -51,6 +53,9 @@
   .neg { color: var(--red); font-weight: 600; }
   .footer { font-size: 11px; color: var(--muted); margin-top: 8px; }
   .concept { white-space: pre-line; font-size: 12px; }
+  .pdf-btn { background: var(--gold); border-color: var(--gold); color: #222; }
+  .pdf-btn:disabled { opacity: .6; cursor: wait; }
+  .pdf-expand { max-height: none !important; overflow: visible !important; }
 </style>
 </head>
 <body>
@@ -60,6 +65,7 @@
   <div class="tabs">
     <button class="tab active" data-page="p1">Control de Margen Bruto</button>
     <button class="tab" data-page="p2">Control de Costos y Penalizaciones</button>
+    <button class="tab pdf-btn" id="btnPdf">Descargar PDF</button>
   </div>
 </header>
 
@@ -433,6 +439,45 @@ document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", (
   document.getElementById(btn.dataset.page).classList.add("active");
   window.dispatchEvent(new Event("resize"));
 }));
+
+/* ============================================================
+   DESCARGA PDF: exactamente 2 hojas, una por página del reporte
+   ============================================================ */
+const esperar = ms => new Promise(r => setTimeout(r, ms));
+document.getElementById("btnPdf").addEventListener("click", async () => {
+  const btn = document.getElementById("btnPdf");
+  const textoOriginal = btn.textContent;
+  const activo = document.querySelector(".tab.active").dataset.page;
+  const scrolls = document.querySelectorAll(".table-scroll");
+  btn.disabled = true; btn.textContent = "Generando PDF...";
+  scrolls.forEach(s => s.classList.add("pdf-expand"));
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
+    const W = pdf.internal.pageSize.getWidth();
+    const H = pdf.internal.pageSize.getHeight();
+    const margen = 8;
+    const paginas = ["p1", "p2"];
+    for (let i = 0; i < paginas.length; i++) {
+      document.querySelector(`.tab[data-page="${paginas[i]}"]`).click();
+      await esperar(700); // Chart.js redibuja al mostrar la página
+      const canvas = await html2canvas(document.getElementById(paginas[i]), {
+        scale: 2, backgroundColor: "#f4f5f9", useCORS: true
+      });
+      const ratio = Math.min((W - 2 * margen) / canvas.width, (H - 2 * margen) / canvas.height);
+      const w = canvas.width * ratio, h = canvas.height * ratio;
+      if (i > 0) pdf.addPage("a3", "landscape");
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", (W - w) / 2, (H - h) / 2, w, h);
+    }
+    pdf.save("Control_Margen_Costos_Marc_Palas.pdf");
+  } catch (e) {
+    alert("No se pudo generar el PDF: " + e.message);
+  } finally {
+    scrolls.forEach(s => s.classList.remove("pdf-expand"));
+    document.querySelector(`.tab[data-page="${activo}"]`).click();
+    btn.disabled = false; btn.textContent = textoOriginal;
+  }
+});
 </script>
 </body>
 </html>
